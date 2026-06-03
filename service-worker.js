@@ -1,4 +1,4 @@
-const CACHE_NAME = 'casur-maps-pwa-v21-3-panel-autoclose-real-overlay-fix';
+const CACHE_NAME = 'casur-maps-pwa-v21-5-compartir-hallazgo-pro';
 const CORE_ASSETS = [
   './',
   './index.html',

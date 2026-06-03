@@ -486,3 +486,38 @@ body.map-visual-highcontrast .measure-alt-values{color:rgba(255,255,255,.8)}
   body.sidebar-open .sidebar{z-index:1450;}
 }
 @media(min-width:861px){.sidebar-backdrop{display:none!important;}}
+
+
+/* V21.4 · Compartir hallazgo */
+.hallazgo-modal.hidden{display:none !important}
+.hallazgo-modal{position:fixed;inset:0;background:rgba(9,15,25,.58);z-index:1800;display:flex;align-items:center;justify-content:center;padding:14px}
+.hallazgo-dialog{width:min(980px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:24px;padding:18px 18px 20px;box-shadow:0 26px 70px rgba(0,0,0,.32);position:relative}
+.hallazgo-close{position:absolute;top:10px;right:12px;border:0;background:transparent;font-size:26px;font-weight:800;color:#334155;cursor:pointer}
+.hallazgo-head h3{margin:0;font-size:1.25rem;color:#0f172a}.hallazgo-head p{margin:5px 0 0;color:#475569;font-size:.95rem}
+.hallazgo-grid{display:grid;grid-template-columns:minmax(280px,340px) 1fr;gap:16px;margin-top:14px}
+.hallazgo-form label{display:block;font-weight:700;color:#1e293b;font-size:.95rem}.hallazgo-form textarea{margin-top:8px;width:100%;min-height:160px;border:1px solid #cbd5e1;border-radius:16px;padding:12px;font:inherit;resize:vertical;background:#f8fafc}
+.hallazgo-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}.hallazgo-actions button{border-radius:14px;padding:10px 14px;font-weight:800;border:1px solid #cbd5e1;cursor:pointer}.hallazgo-actions .primary{background:#0b7f3a;color:#fff;border-color:#0b7f3a}.hallazgo-actions .secondary{background:#fff;color:#0f172a}
+.hallazgo-preview-wrap{background:#f1f5f9;border:1px solid #dbe4ee;border-radius:20px;padding:12px;display:flex;justify-content:center;align-items:flex-start}.hallazgo-canvas{max-width:100%;height:auto;border-radius:18px;background:#fff;box-shadow:0 10px 30px rgba(15,23,42,.10)}
+.share-hallazgo-btn{background:#005baa;color:#fff;border:none;border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer}
+@media (max-width:760px){.hallazgo-dialog{padding:14px 14px 16px;border-radius:18px}.hallazgo-grid{grid-template-columns:1fr}.hallazgo-form textarea{min-height:120px}.hallazgo-actions button{flex:1 1 calc(50% - 8px)}}
+
+
+/* V21.5 · Compartir hallazgo PRO */
+.hallazgo-form input,
+.hallazgo-form select{
+  width:100%;
+  margin-top:8px;
+  border:1px solid #cbd5e1;
+  border-radius:14px;
+  padding:10px 12px;
+  font:inherit;
+  background:#f8fafc;
+  color:#0f172a;
+}
+.hallazgo-two-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.hallazgo-photo-box{margin-top:12px;border:1px dashed #cbd5e1;border-radius:16px;padding:10px;background:#f8fafc}
+.hallazgo-photo-box input{background:#fff}
+.hallazgo-photo-preview{margin-top:8px;min-height:48px;border-radius:12px;background:#fff;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;color:#64748b;font-weight:700;font-size:.9rem;overflow:hidden}
+.hallazgo-photo-preview img{width:100%;max-height:150px;object-fit:cover;display:block}
+.hallazgo-photo-box .secondary{margin-top:8px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;padding:8px 10px;font-weight:800;cursor:pointer}
+@media (max-width:760px){.hallazgo-two-cols{grid-template-columns:1fr}}

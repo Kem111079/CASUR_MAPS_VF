@@ -767,6 +767,7 @@ function cleanSelectedHtml(p, compact=false){
       <a class="go-crono" href="${escapeHtml(crono)}">▣ Cronológico</a>
       <a class="go-hist" href="${escapeHtml(hist)}">▥ Histórico</a>
       <button class="go-zoom" onclick="zoomSelected()" type="button">⌕ Acercar</button>
+      <button class="share-hallazgo-btn" onclick="openHallazgoModal()" type="button">🟢 Compartir hallazgo</button>
     </div>`;
 }
 function updateSelectionSheet(p){
@@ -1929,3 +1930,263 @@ bindUi = function(){
 };
 
 console.info('[CASUR V20.4] Capas de edad por rangos integradas: <3, 4–6 y >6 meses.');
+
+
+// V21.4 · Compartir hallazgo: genera tarjeta visual y permite compartirla.
+let hallazgoBlob = null;
+function hallazgoDataFromProps(p=selectedProps){
+  if(!p) return null;
+  const m = metricasFor(p);
+  const cod = displayCode(getCodLote(p));
+  const hac = m.hacienda_productor || 'Sin dato histórico';
+  const tab = getTablon(p) || '—';
+  const tch = Number.isFinite(Number(m.tch_ultima_zafra)) ? formatMetric(m.tch_ultima_zafra,' t/ha') : '—';
+  const edadVal = edadActualMetric(m);
+  const edad = Number.isFinite(edadVal) ? formatMetric(edadVal,' meses') : '—';
+  const variedad = m.variedad || '—';
+  const center = featureCentroidLatLng({feature:{properties:p, geometry:(selectedLayer&&selectedLayer.feature&&selectedLayer.feature.properties===p&&selectedLayer.feature.geometry)||null}, getBounds:()=> selectedLayer ? selectedLayer.getBounds() : null});
+  const lat = center ? Number(center.lat).toFixed(6) : '—';
+  const lng = center ? Number(center.lng).toFixed(6) : '—';
+  return {cod,hac,tab,tch,edad,variedad,lat,lng,fecha:new Date().toLocaleString('es-NI')};
+}
+function openHallazgoModal(){
+  if(!selectedProps){ alert('Seleccione primero un lote.'); return; }
+  const modal=$('hallazgoModal'); if(!modal) return;
+  const ta=$('hallazgoComentario'); if(ta) ta.value='';
+  modal.classList.remove('hidden');
+  renderHallazgoCard();
+}
+function closeHallazgoModal(){ const modal=$('hallazgoModal'); if(modal) modal.classList.add('hidden'); }
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight){
+  const words = String(text||'').split(/\s+/); let line=''; let lines=[];
+  words.forEach(w=>{ const test = line ? line + ' ' + w : w; if(ctx.measureText(test).width > maxWidth && line){ lines.push(line); line=w; } else line=test; });
+  if(line) lines.push(line);
+  lines.forEach((ln,i)=> ctx.fillText(ln, x, y + i*lineHeight));
+  return lines.length;
+}
+function roundedRect(ctx,x,y,w,h,r,fill,stroke){
+  ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+  if(fill){ ctx.fillStyle=fill; ctx.fill(); }
+  if(stroke){ ctx.strokeStyle=stroke; ctx.stroke(); }
+}
+function renderHallazgoCard(){
+  const c=$('hallazgoCanvas'); if(!c) return;
+  const ctx=c.getContext('2d'); const d=hallazgoDataFromProps(); if(!d) return;
+  const note=($('hallazgoComentario')?.value||'').trim() || 'Sin comentario registrado.';
+  const w=c.width, h=c.height;
+  ctx.clearRect(0,0,w,h);
+  // background
+  const grad=ctx.createLinearGradient(0,0,w,h); grad.addColorStop(0,'#f8fafc'); grad.addColorStop(1,'#eef6f0'); ctx.fillStyle=grad; ctx.fillRect(0,0,w,h);
+  // top band
+  const headGrad=ctx.createLinearGradient(0,0,w,0); headGrad.addColorStop(0,'#0b7f3a'); headGrad.addColorStop(.68,'#005baa'); headGrad.addColorStop(1,'#f4c542');
+  roundedRect(ctx,50,45,w-100,180,28,headGrad,null);
+  ctx.fillStyle='#ffffff'; ctx.font='700 30px Arial'; ctx.fillText('Departamento de Negocios de Caña',90,95);
+  ctx.font='900 56px Arial'; ctx.fillText('CASUR Maps',90,155);
+  ctx.font='600 28px Arial'; ctx.fillText('Mapa inteligente de lotes cañeros',90,198);
+  // body card
+  roundedRect(ctx,50,255,w-100,h-315,28,'#ffffff','#dbe5dd'); ctx.lineWidth=2;
+  ctx.fillStyle='#0f172a'; ctx.font='900 46px Arial'; ctx.fillText('CODLOTE ' + d.cod,90,335);
+  ctx.fillStyle='#334155'; ctx.font='700 32px Arial'; ctx.fillText(d.hac,90,388);
+  ctx.font='700 28px Arial'; ctx.fillText('Tablón ' + d.tab,90,430);
+
+  const boxes=[
+    ['TCH última zafra', d.tch, '#fff6d8'],
+    ['Edad actual', d.edad, '#e8f6ee'],
+    ['Variedad', d.variedad, '#e9f0fb'],
+    ['Coordenadas', `${d.lat}, ${d.lng}`, '#f4f7fb'],
+  ];
+  let bx=90, by=470, bw=480, bh=122;
+  boxes.forEach((b,idx)=>{
+    const col=idx%2, row=Math.floor(idx/2); const x=bx + col*(bw+40), y=by + row*(bh+28);
+    roundedRect(ctx,x,y,bw,bh,22,b[2],'#e2e8f0');
+    ctx.fillStyle='#64748b'; ctx.font='800 22px Arial'; ctx.fillText(b[0],x+24,y+36);
+    ctx.fillStyle='#0f172a'; ctx.font=(b[0]==='Coordenadas' ? '700 24px Arial' : '900 30px Arial');
+    wrapCanvasText(ctx,b[1],x+24,y+78,bw-48,30);
+  });
+
+  const hy=770;
+  roundedRect(ctx,90,hy,w-180,320,24,'#f8fafc','#dbe5dd');
+  ctx.fillStyle='#0b7f3a'; ctx.font='900 30px Arial'; ctx.fillText('Hallazgo',120,hy+48);
+  ctx.fillStyle='#0f172a'; ctx.font='600 28px Arial';
+  wrapCanvasText(ctx,note,120,hy+98,w-240,38);
+
+  ctx.fillStyle='#64748b'; ctx.font='700 22px Arial'; ctx.fillText('Generado: ' + d.fecha,120,h-110);
+  ctx.fillText('Fuente: CASUR Maps · Tarjeta de hallazgo rápida para compartir',120,h-74);
+  c.toBlob(function(blob){ hallazgoBlob = blob; }, 'image/png');
+}
+function hallazgoText(){
+  const d=hallazgoDataFromProps(); if(!d) return '';
+  const note=($('hallazgoComentario')?.value||'').trim() || 'Sin comentario registrado.';
+  return `CASUR Maps\nCODLOTE ${d.cod}\n${d.hac}\nTablón ${d.tab}\nTCH última zafra: ${d.tch}\nEdad actual: ${d.edad}\nVariedad: ${d.variedad}\nHallazgo: ${note}\nCoordenadas: ${d.lat}, ${d.lng}\nFecha: ${d.fecha}`;
+}
+async function shareHallazgo(){
+  renderHallazgoCard();
+  const text = hallazgoText();
+  if(hallazgoBlob && navigator.canShare && navigator.canShare({files:[new File([hallazgoBlob], 'hallazgo_casur.png', {type:'image/png'})]})){
+    const file = new File([hallazgoBlob], `hallazgo_casur_${Date.now()}.png`, {type:'image/png'});
+    try{ await navigator.share({title:'CASUR Maps · Hallazgo', text:'Tarjeta de hallazgo generada desde CASUR Maps', files:[file]}); return; }catch(err){}
+  }
+  const wa = 'https://wa.me/?text=' + encodeURIComponent(text);
+  window.open(wa,'_blank');
+}
+function downloadHallazgoImage(){
+  renderHallazgoCard();
+  const c=$('hallazgoCanvas'); if(!c) return;
+  const a=document.createElement('a');
+  const d=hallazgoDataFromProps();
+  a.href=c.toDataURL('image/png'); a.download=`hallazgo_codlote_${(d&&d.cod)||'casur'}.png`; a.click();
+}
+async function copyHallazgoText(){
+  const text=hallazgoText();
+  try{ await navigator.clipboard.writeText(text); alert('Texto del hallazgo copiado.'); }
+  catch(err){ window.prompt('Copie el siguiente texto:', text); }
+}
+window.openHallazgoModal=openHallazgoModal;
+window.closeHallazgoModal=closeHallazgoModal;
+window.shareHallazgo=shareHallazgo;
+window.downloadHallazgoImage=downloadHallazgoImage;
+window.copyHallazgoText=copyHallazgoText;
+
+// bind V21.4 UI after page load
+setTimeout(function(){
+  $('hallazgoClose')?.addEventListener('click', closeHallazgoModal);
+  $('hallazgoGenerar')?.addEventListener('click', renderHallazgoCard);
+  $('hallazgoWhatsapp')?.addEventListener('click', shareHallazgo);
+  $('hallazgoDescargar')?.addEventListener('click', downloadHallazgoImage);
+  $('hallazgoCopiar')?.addEventListener('click', copyHallazgoText);
+  $('hallazgoComentario')?.addEventListener('input', function(){ renderHallazgoCard(); });
+  $('hallazgoModal')?.addEventListener('click', function(ev){ if(ev.target===this) closeHallazgoModal(); });
+},0);
+
+
+// V21.5 · Compartir hallazgo PRO: categoría, severidad, técnico y foto opcional.
+let hallazgoFotoDataUrl = '';
+function readHallazgoFormPro(){
+  return {
+    tecnico: ($('hallazgoTecnico')?.value || '').trim() || 'No especificado',
+    categoria: ($('hallazgoCategoria')?.value || 'Seguimiento').trim(),
+    severidad: ($('hallazgoSeveridad')?.value || 'Media').trim(),
+    comentario: ($('hallazgoComentario')?.value || '').trim() || 'Sin comentario registrado.'
+  };
+}
+function setHallazgoPreviewPhoto(dataUrl){
+  hallazgoFotoDataUrl = dataUrl || '';
+  const pv = $('hallazgoFotoPreview');
+  if(!pv) return;
+  if(hallazgoFotoDataUrl) pv.innerHTML = `<img src="${hallazgoFotoDataUrl}" alt="Foto del hallazgo">`;
+  else pv.textContent = 'Sin foto adjunta.';
+}
+function loadHallazgoImage(){
+  return new Promise(resolve=>{
+    if(!hallazgoFotoDataUrl) return resolve(null);
+    const img = new Image();
+    img.onload = ()=>resolve(img);
+    img.onerror = ()=>resolve(null);
+    img.src = hallazgoFotoDataUrl;
+  });
+}
+function drawImageCover(ctx,img,x,y,w,h){
+  if(!img) return;
+  const r = Math.max(w/img.width, h/img.height);
+  const sw = w/r, sh = h/r;
+  const sx = (img.width - sw)/2, sy = (img.height - sh)/2;
+  ctx.save();
+  roundedRect(ctx,x,y,w,h,22,'#f8fafc','#dbe5dd');
+  ctx.clip();
+  ctx.drawImage(img,sx,sy,sw,sh,x,y,w,h);
+  ctx.restore();
+}
+openHallazgoModal = function(){
+  if(!selectedProps){ alert('Seleccione primero un lote.'); return; }
+  const modal=$('hallazgoModal'); if(!modal) return;
+  ['hallazgoComentario','hallazgoTecnico'].forEach(id=>{ const el=$(id); if(el) el.value=''; });
+  if($('hallazgoCategoria')) $('hallazgoCategoria').value='Seguimiento';
+  if($('hallazgoSeveridad')) $('hallazgoSeveridad').value='Media';
+  setHallazgoPreviewPhoto('');
+  modal.classList.remove('hidden');
+  renderHallazgoCard();
+};
+renderHallazgoCard = async function(){
+  const c=$('hallazgoCanvas'); if(!c) return;
+  const ctx=c.getContext('2d'); const d=hallazgoDataFromProps(); if(!d) return;
+  const form=readHallazgoFormPro();
+  const photo=await loadHallazgoImage();
+  const w=c.width, h=c.height;
+  ctx.clearRect(0,0,w,h);
+  const grad=ctx.createLinearGradient(0,0,w,h); grad.addColorStop(0,'#f8fafc'); grad.addColorStop(1,'#eef6f0'); ctx.fillStyle=grad; ctx.fillRect(0,0,w,h);
+  const headGrad=ctx.createLinearGradient(0,0,w,0); headGrad.addColorStop(0,'#0b7f3a'); headGrad.addColorStop(.68,'#005baa'); headGrad.addColorStop(1,'#f4c542');
+  roundedRect(ctx,50,45,w-100,180,28,headGrad,null);
+  ctx.fillStyle='#ffffff'; ctx.font='700 30px Arial'; ctx.fillText('Departamento de Negocios de Caña',90,95);
+  ctx.font='900 56px Arial'; ctx.fillText('CASUR Maps',90,155);
+  ctx.font='600 28px Arial'; ctx.fillText('Mapa inteligente de lotes cañeros',90,198);
+
+  roundedRect(ctx,50,255,w-100,h-315,28,'#ffffff','#dbe5dd'); ctx.lineWidth=2;
+  ctx.fillStyle='#0f172a'; ctx.font='900 46px Arial'; ctx.fillText('CODLOTE ' + d.cod,90,335);
+  ctx.fillStyle='#334155'; ctx.font='700 32px Arial'; ctx.fillText(d.hac,90,388);
+  ctx.font='700 28px Arial'; ctx.fillText('Tablón ' + d.tab,90,430);
+
+  const sevColor = form.severidad === 'Alta' ? '#b91c1c' : (form.severidad === 'Media' ? '#b7791f' : '#0b7f3a');
+  roundedRect(ctx,90,455,450,72,18,'#f8fafc','#e2e8f0');
+  ctx.fillStyle='#64748b'; ctx.font='800 20px Arial'; ctx.fillText('CATEGORÍA',114,482);
+  ctx.fillStyle='#0f172a'; ctx.font='900 27px Arial'; ctx.fillText(form.categoria,114,512);
+  roundedRect(ctx,570,455,260,72,18,'#f8fafc','#e2e8f0');
+  ctx.fillStyle='#64748b'; ctx.font='800 20px Arial'; ctx.fillText('SEVERIDAD',594,482);
+  ctx.fillStyle=sevColor; ctx.font='900 29px Arial'; ctx.fillText(form.severidad,594,512);
+  roundedRect(ctx,860,455,250,72,18,'#f8fafc','#e2e8f0');
+  ctx.fillStyle='#64748b'; ctx.font='800 20px Arial'; ctx.fillText('TÉCNICO',884,482);
+  ctx.fillStyle='#0f172a'; ctx.font='900 24px Arial'; wrapCanvasText(ctx,form.tecnico,884,512,210,26);
+
+  const boxes=[
+    ['TCH última zafra', d.tch, '#fff6d8'],
+    ['Edad actual', d.edad, '#e8f6ee'],
+    ['Variedad', d.variedad, '#e9f0fb'],
+    ['Coordenadas', `${d.lat}, ${d.lng}`, '#f4f7fb'],
+  ];
+  let bx=90, by=555, bw=480, bh=112;
+  boxes.forEach((b,idx)=>{
+    const col=idx%2, row=Math.floor(idx/2); const x=bx + col*(bw+40), y=by + row*(bh+24);
+    roundedRect(ctx,x,y,bw,bh,22,b[2],'#e2e8f0');
+    ctx.fillStyle='#64748b'; ctx.font='800 21px Arial'; ctx.fillText(b[0],x+24,y+34);
+    ctx.fillStyle='#0f172a'; ctx.font=(b[0]==='Coordenadas' ? '700 24px Arial' : '900 29px Arial');
+    wrapCanvasText(ctx,b[1],x+24,y+74,bw-48,29);
+  });
+
+  let hy=835, boxH=photo?240:330;
+  roundedRect(ctx,90,hy,w-180,boxH,24,'#f8fafc','#dbe5dd');
+  ctx.fillStyle='#0b7f3a'; ctx.font='900 30px Arial'; ctx.fillText('Hallazgo',120,hy+48);
+  ctx.fillStyle='#0f172a'; ctx.font='600 27px Arial';
+  wrapCanvasText(ctx,form.comentario,120,hy+98,w-240,36);
+
+  if(photo){
+    const py=hy+boxH+26;
+    ctx.fillStyle='#0b7f3a'; ctx.font='900 26px Arial'; ctx.fillText('Evidencia fotográfica',90,py);
+    drawImageCover(ctx,photo,90,py+22,w-180,170);
+  }
+
+  ctx.fillStyle='#64748b'; ctx.font='700 22px Arial'; ctx.fillText('Generado: ' + d.fecha,120,h-110);
+  ctx.fillText('Fuente: CASUR Maps · Tarjeta de hallazgo rápida para compartir',120,h-74);
+  c.toBlob(function(blob){ hallazgoBlob = blob; }, 'image/png');
+};
+hallazgoText = function(){
+  const d=hallazgoDataFromProps(); if(!d) return '';
+  const form=readHallazgoFormPro();
+  return `CASUR Maps\nCODLOTE ${d.cod}\n${d.hac}\nTablón ${d.tab}\nCategoría: ${form.categoria}\nSeveridad: ${form.severidad}\nTécnico: ${form.tecnico}\nTCH última zafra: ${d.tch}\nEdad actual: ${d.edad}\nVariedad: ${d.variedad}\nHallazgo: ${form.comentario}\nCoordenadas: ${d.lat}, ${d.lng}\nFecha: ${d.fecha}`;
+};
+setTimeout(function(){
+  const file=$('hallazgoFotoInput');
+  file?.addEventListener('change', function(){
+    const f=this.files && this.files[0];
+    if(!f){ setHallazgoPreviewPhoto(''); renderHallazgoCard(); return; }
+    const reader=new FileReader();
+    reader.onload=e=>{ setHallazgoPreviewPhoto(e.target.result); renderHallazgoCard(); };
+    reader.readAsDataURL(f);
+  });
+  $('hallazgoFotoClear')?.addEventListener('click', function(){
+    const f=$('hallazgoFotoInput'); if(f) f.value='';
+    setHallazgoPreviewPhoto(''); renderHallazgoCard();
+  });
+  ['hallazgoTecnico','hallazgoCategoria','hallazgoSeveridad'].forEach(id=>{
+    $(id)?.addEventListener('input', renderHallazgoCard);
+    $(id)?.addEventListener('change', renderHallazgoCard);
+  });
+},0);
