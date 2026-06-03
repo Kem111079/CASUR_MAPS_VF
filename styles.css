@@ -1,0 +1,488 @@
+
+:root{--azul:#002f5f;--azul2:#064b85;--dorado:#c9a227;--verde:#1f7a4d;--gris:#f3f5f7;--texto:#172033;--panel:rgba(255,255,255,.96);--border:rgba(0,47,95,.16);--danger:#b42318}*{box-sizing:border-box}html,body,#app{height:100%;margin:0}body{font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;color:var(--texto);background:#eef2f6;overscroll-behavior:none}#app{display:grid;grid-template-columns:365px 1fr}.sidebar{z-index:1000;background:linear-gradient(180deg,#fff 0%,#f7f9fb 100%);border-right:1px solid var(--border);box-shadow:0 16px 40px rgba(0,0,0,.12);overflow:auto}.brand{padding:18px 18px 14px;background:linear-gradient(135deg,var(--azul),#0a3f78 70%,#0d5d91);color:#fff;position:sticky;top:0;z-index:2}.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.86}.brand h1{margin:6px 0 2px;font-size:21px;line-height:1.08;font-weight:850}.brand p{margin:7px 0 0;font-size:12.5px;opacity:.86;line-height:1.35}.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);margin-top:10px;font-size:12px}.section{padding:14px 16px;border-bottom:1px solid var(--border)}.section h2{margin:0 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--azul)}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#fff;border:1px solid var(--border);border-radius:16px;padding:10px;box-shadow:0 8px 20px rgba(0,47,95,.06)}.stat b{display:block;font-size:19px;color:var(--azul)}.stat span{font-size:11px;color:#64748b}input,select,button{font:inherit}.control{width:100%;border-radius:12px;border:1px solid rgba(0,47,95,.18);padding:11px 12px;outline:none;background:#fff}.control:focus{border-color:var(--azul2);box-shadow:0 0 0 3px rgba(6,75,133,.12)}.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}button{border:0;border-radius:13px;padding:11px 10px;cursor:pointer;font-weight:750;transition:.15s ease}button:hover{transform:translateY(-1px)}button:disabled{opacity:.55;cursor:not-allowed;transform:none}.primary{background:var(--azul);color:#fff}.secondary{background:#fff;color:var(--azul);border:1px solid rgba(0,47,95,.18)}.success{background:var(--verde);color:#fff}.warning{background:var(--dorado);color:#1d2430}.danger{background:var(--danger);color:#fff}.hint{font-size:12px;color:#5d6b82;line-height:1.42;margin-top:8px}.selected-card{background:#fff;border:1px solid var(--border);border-left:5px solid var(--dorado);border-radius:16px;padding:12px;box-shadow:0 10px 24px rgba(0,47,95,.08)}.kv{display:grid;grid-template-columns:118px 1fr;gap:6px;font-size:12.5px;padding:4px 0;border-bottom:1px dashed #e5e9ef}.kv:last-child{border-bottom:0}.kv span:first-child{color:#657389}.status{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#314158}.dot{width:10px;height:10px;border-radius:999px;background:#94a3b8;box-shadow:0 0 0 5px rgba(148,163,184,.16)}.dot.on{background:#15b86a;box-shadow:0 0 0 6px rgba(21,184,106,.18)}#map{height:100%;width:100%;z-index:1}.mapwrap{position:relative;min-height:100%}.topbar{position:absolute;z-index:900;top:14px;left:14px;right:14px;display:flex;gap:10px;align-items:center;justify-content:space-between;pointer-events:none}.badge{pointer-events:auto;background:var(--panel);border:1px solid var(--border);border-radius:999px;padding:9px 12px;box-shadow:0 10px 26px rgba(0,0,0,.12);font-size:12.5px}.mobile-toggle{display:none;pointer-events:auto;background:var(--azul);color:#fff;border-radius:999px;padding:10px 13px}.install-toast{position:absolute;right:18px;bottom:18px;z-index:1100;background:#fff;border:1px solid var(--border);border-radius:20px;padding:12px;box-shadow:0 18px 44px rgba(0,0,0,.18);max-width:320px;display:none}.install-toast h3{margin:0 0 5px;color:var(--azul);font-size:15px}.install-toast p{margin:0 0 10px;font-size:12.5px;color:#526072;line-height:1.35}.popup-title{font-weight:850;color:var(--azul);font-size:14px;margin-bottom:6px}.popup-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.popup-actions a{display:block;text-align:center;text-decoration:none;border-radius:10px;padding:7px;background:var(--azul);color:#fff;font-weight:750}.popup-actions a.alt{background:#eef4fb;color:var(--azul)}.leaflet-popup-content{min-width:230px}.leaflet-control-layers{border-radius:14px!important;overflow:hidden}.gps-readout{background:#f8fafc;border:1px solid #e5e9ef;border-radius:14px;padding:9px;margin-top:8px;font-size:12.5px;line-height:1.42}.legend{background:#fff;border-radius:16px;padding:10px 12px;box-shadow:0 10px 25px rgba(0,0,0,.12);border:1px solid rgba(0,47,95,.15);font-size:12px}.legend b{display:block;color:var(--azul);margin-bottom:6px}.line{display:flex;gap:8px;align-items:center;margin:4px 0}.swatch{width:14px;height:14px;border-radius:4px;background:#c9a227;border:1px solid rgba(0,0,0,.15)}.loader{position:absolute;z-index:1200;inset:0;background:linear-gradient(135deg,#002f5f,#0d5d91);display:grid;place-items:center;color:#fff;text-align:center;padding:25px}.loader-card{max-width:460px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);border-radius:24px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.25)}.loader h2{margin:0 0 8px;font-size:25px}.loader p{margin:0;color:rgba(255,255,255,.85);line-height:1.45}.progress{height:7px;border-radius:999px;background:rgba(255,255,255,.22);overflow:hidden;margin-top:16px}.progress span{display:block;height:100%;width:36%;border-radius:999px;background:var(--dorado);animation:loadbar 1.2s infinite ease-in-out}@keyframes loadbar{0%{transform:translateX(-110%)}100%{transform:translateX(310%)}}@media(max-width:860px){#app{grid-template-columns:1fr}.sidebar{position:absolute;left:0;top:0;bottom:0;width:min(88vw,365px);transform:translateX(-102%);transition:.22s ease;z-index:1200}.sidebar-open .sidebar{transform:translateX(0)}.mobile-toggle{display:inline-flex}.topbar{left:10px;right:10px;top:10px}.badge{font-size:11.5px;padding:8px 10px}.brand h1{font-size:19px}.section{padding:12px}.install-toast{left:12px;right:12px;bottom:12px;max-width:none}}@media(display-mode:standalone){.pwa-only{display:block}.browser-only{display:none!important}}.pwa-only{display:none}
+
+
+/* V2 · Fix móvil panel/GPS: permite cerrar el panel, muestra siempre el mapa y recalcula Leaflet */
+.panel-close{display:none}
+.mobile-actions{display:none}
+@media(max-width:860px){
+  html,body,#app,.mapwrap,#map{height:100dvh;min-height:100dvh;overflow:hidden}
+  #app{display:block;position:fixed;inset:0;width:100vw;height:100dvh}
+  .mapwrap{position:fixed;inset:0;width:100vw;height:100dvh;background:#eef2f6}
+  #map{position:absolute;inset:0;width:100%;height:100%}
+  .sidebar{position:fixed;left:0;top:0;bottom:0;width:min(90vw,390px);height:100dvh;transform:translateX(-105%);transition:transform .22s ease;z-index:1400;box-shadow:12px 0 32px rgba(0,0,0,.22)}
+  .sidebar-open .sidebar{transform:translateX(0)}
+  .panel-close{display:block;position:sticky;top:0;z-index:5;width:100%;border-radius:0;padding:13px 14px;background:#002f5f;color:#fff;text-align:left;font-weight:850;border-bottom:1px solid rgba(255,255,255,.20)}
+  .topbar{z-index:1300;top:max(10px,env(safe-area-inset-top));left:10px;right:10px}
+  .mobile-toggle{display:inline-flex;box-shadow:0 10px 24px rgba(0,0,0,.22)}
+  .badge{max-width:calc(100vw - 138px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mobile-actions{display:grid;position:fixed;right:12px;bottom:max(14px,env(safe-area-inset-bottom));z-index:1300;gap:8px;grid-template-columns:1fr;pointer-events:auto}
+  .mobile-actions button{box-shadow:0 12px 28px rgba(0,0,0,.24);border-radius:999px;padding:12px 16px;min-width:84px}
+  .install-toast{z-index:1500}
+}
+
+
+/* V3/V4 · Avenza CASUR: etiquetas CodLote + tarjeta limpia + puente histórico */
+.codlote-label{background:rgba(255,255,255,.95);border:1px solid rgba(0,47,95,.35);color:#002f5f;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:900;box-shadow:0 3px 10px rgba(0,0,0,.18);white-space:nowrap;line-height:1.25;pointer-events:none;text-transform:uppercase}
+.leaflet-marker-icon.codlote-label{width:auto!important;height:auto!important}
+.selection-sheet{position:absolute;left:14px;bottom:14px;z-index:1150;width:min(420px,calc(100% - 28px));background:rgba(255,255,255,.97);border:1px solid rgba(0,47,95,.18);border-radius:22px;box-shadow:0 20px 50px rgba(0,0,0,.22);overflow:hidden;backdrop-filter:blur(12px);transition:transform .2s ease,opacity .2s ease}
+.selection-sheet.collapsed{transform:translateY(calc(100% + 22px));opacity:0;pointer-events:none}
+.sheet-close{position:absolute;right:10px;top:9px;width:30px;height:30px;border-radius:999px;background:#eef4fb;color:#002f5f;border:1px solid rgba(0,47,95,.12);padding:0;z-index:2;font-size:20px;line-height:1}
+.sheet-content{padding:15px 15px 14px}.sheet-empty{font-size:12px;color:#5d6b82;font-weight:750;padding-right:34px}.field-card-kicker{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#64748b;font-weight:900}.field-card-title{font-size:22px;color:#002f5f;font-weight:950;line-height:1.05;margin:4px 34px 8px 0;text-transform:uppercase}.field-card-sub{font-size:12px;color:#475569;font-weight:800;line-height:1.35;margin-bottom:10px}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:9px 0 10px}.field-mini{border:1px solid #e5e9ef;background:#f8fafc;border-radius:13px;padding:8px}.field-mini span{display:block;color:#64748b;font-size:10px;font-weight:900;text-transform:uppercase}.field-mini b{display:block;margin-top:3px;color:#172033;font-size:13px;word-break:break-word}.field-actions{display:grid;grid-template-columns:1fr 1fr 92px;gap:8px}.field-actions a,.field-actions button{display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center;border-radius:14px;padding:10px 9px;font-size:12px;font-weight:900;border:0;min-height:42px}.field-actions .go-crono{background:#1f7a4d;color:white}.field-actions .go-hist{background:#002f5f;color:white}.field-actions .go-zoom{background:#fff;color:#002f5f;border:1px solid rgba(0,47,95,.18)}.selected-card .field-card-title{font-size:18px;margin-right:0}.selected-card .field-actions{grid-template-columns:1fr 1fr}.selected-card .field-actions .go-zoom{grid-column:1 / -1}.gps-inside-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.gps-inside-actions a{display:block;text-align:center;text-decoration:none;border-radius:11px;padding:8px;font-size:12px;font-weight:850}.gps-inside-actions a:first-child{background:#1f7a4d;color:white}.gps-inside-actions a:last-child{background:#002f5f;color:white}.legend .label-line{border-top:1px solid #e5e9ef;margin-top:6px;padding-top:6px}
+@media(max-width:860px){.selection-sheet{position:fixed;left:10px;right:10px;bottom:max(12px,env(safe-area-inset-bottom));width:auto;z-index:1350}.selection-sheet:not(.collapsed)~.install-toast{display:none!important}.field-card-title{font-size:20px}.field-actions{grid-template-columns:1fr 1fr}.field-actions .go-zoom{grid-column:1 / -1}.mobile-actions{bottom:max(118px,env(safe-area-inset-bottom))}.sidebar-open~.mapwrap .selection-sheet{display:none}}
+@media(max-width:430px){.field-grid{grid-template-columns:1fr 1fr}.field-actions a,.field-actions button{font-size:11px;padding:9px 7px}.field-card-title{font-size:18px}}
+
+
+/* V5 · GPS inteligente: lote, camino, borde y cuatro esquinas */
+.gps-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0 10px}.gps-meta-grid div{border:1px solid #e5e9ef;background:#f8fafc;border-radius:12px;padding:8px}.gps-meta-grid span{display:block;color:#64748b;font-size:9.5px;font-weight:900;text-transform:uppercase}.gps-meta-grid b{display:block;margin-top:3px;color:#172033;font-size:12px;line-height:1.2}.gps-meta-grid b.good{color:#0b7f3a}.gps-meta-grid b.warn{color:#9a6a00}.gps-meta-grid b.bad{color:#b91c1c}.gps-decision{border-radius:15px;padding:10px 11px;margin:8px 0 9px;font-size:12px;line-height:1.35;font-weight:750;border:1px solid #dbe5dd}.gps-decision b{font-weight:950}.gps-decision.high{background:#ecfdf5;border-color:#bbf7d0;color:#075e2d}.gps-decision.medium{background:#fff8df;border-color:#fde68a;color:#684500}.gps-decision.warn{background:#fff7ed;border-color:#fed7aa;color:#7c2d12}.gps-decision.low{background:#fff1f1;border-color:#fecaca;color:#7f1d1d}.candidate-list{display:grid;gap:8px;margin-top:8px}.candidate-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border:1px solid #e2e8f0;background:#fff;border-radius:14px;padding:9px}.candidate-row b{display:block;color:#002f5f;font-size:13px;text-transform:uppercase}.candidate-row span{display:block;color:#64748b;font-size:10.5px;font-weight:800;margin-top:3px;line-height:1.3}.candidate-row button{border:0;border-radius:12px;background:#002f5f;color:white;font-weight:900;padding:9px 10px;min-width:58px}.gps-inside-actions button{border:0;background:#fff;color:#002f5f;border:1px solid rgba(0,47,95,.18);border-radius:11px;padding:8px;font-size:12px;font-weight:850}.gps-inside-actions:not(.compact){grid-template-columns:1fr 1fr 80px}.field-actions.one{grid-template-columns:1fr}.field-actions.one button{width:100%}.selected-card .gps-meta-grid{grid-template-columns:1fr}.selected-card .candidate-row{grid-template-columns:1fr}.selected-card .gps-inside-actions:not(.compact){grid-template-columns:1fr}.gps-readout .candidate-list{max-height:280px;overflow:auto;padding-right:2px}.gps-readout .gps-inside-actions:not(.compact){grid-template-columns:1fr 1fr}.gps-readout .gps-inside-actions button{grid-column:1 / -1}.control#gpsMode{font-weight:850;color:#002f5f;background:#fff}
+@media(max-width:430px){.gps-meta-grid{grid-template-columns:1fr 1fr}.candidate-row{grid-template-columns:1fr}.candidate-row button{width:100%}.gps-inside-actions:not(.compact){grid-template-columns:1fr 1fr}.gps-inside-actions:not(.compact) button{grid-column:1 / -1}}
+
+/* V5.1 · UX GPS Silencioso: barra discreta, no tapa el mapa */
+.gps-status-bar{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:1320;width:min(560px,calc(100% - 28px));display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.96);border:1px solid rgba(0,47,95,.16);border-left:5px solid var(--azul);border-radius:18px;box-shadow:0 14px 34px rgba(0,0,0,.18);padding:10px 10px 10px 13px;backdrop-filter:blur(12px);transition:opacity .18s ease,transform .18s ease}.gps-status-bar.hidden{opacity:0;pointer-events:none;transform:translate(-50%,18px)}.gps-status-bar.good{border-left-color:var(--verde)}.gps-status-bar.medium{border-left-color:var(--dorado)}.gps-status-bar.warn{border-left-color:#b7791f}.gps-status-bar.low{border-left-color:var(--danger)}.gps-status-copy{min-width:0}.gps-status-copy strong{display:block;color:var(--azul);font-size:13px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gps-status-copy small{display:block;color:#64748b;font-size:11px;font-weight:750;line-height:1.25;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gps-status-actions{display:flex;align-items:center;gap:6px;flex:0 0 auto}.gps-status-action{background:var(--azul);color:#fff;border-radius:999px;padding:8px 11px;font-size:11px;font-weight:900;box-shadow:none}.gps-status-hide{width:30px;height:30px;border-radius:999px;padding:0;background:#eef4fb;color:var(--azul);border:1px solid rgba(0,47,95,.14);font-size:18px;line-height:1;box-shadow:none}.gps-status-action:hover,.gps-status-hide:hover{transform:none}.sidebar-open~.mapwrap .gps-status-bar{display:none}.gps-readout{max-height:360px;overflow:auto}.gps-readout .gps-decision{margin-bottom:6px}@media(max-width:860px){.gps-status-bar{left:10px;right:10px;bottom:max(14px,env(safe-area-inset-bottom));transform:none;width:auto;border-radius:16px;padding:9px 9px 9px 11px}.gps-status-bar.hidden{transform:translateY(18px)}.gps-status-copy strong{font-size:12.5px}.gps-status-copy small{font-size:10.5px}.mobile-actions{bottom:max(86px,env(safe-area-inset-bottom))}.selection-sheet{bottom:max(82px,env(safe-area-inset-bottom))}}@media(max-width:430px){.gps-status-action{padding:8px 10px}.gps-status-hide{width:28px;height:28px}.gps-status-copy small{max-width:calc(100vw - 150px)}}
+
+
+/* V5.2 · Tarjeta final CASUR Maps: lectura agronómica compacta */
+.field-card-title{
+  display:flex;
+  align-items:baseline;
+  gap:7px;
+  flex-wrap:wrap;
+  font-size:23px!important;
+  margin:4px 34px 2px 0!important;
+  letter-spacing:-.35px;
+}
+.field-card-title em{
+  font-style:normal;
+  font-size:.62em;
+  color:#172033;
+  font-weight:950;
+  white-space:nowrap;
+}
+.field-card-owner{
+  color:#1f7a4d;
+  font-size:20px;
+  font-weight:950;
+  line-height:1.12;
+  margin:2px 34px 3px 0;
+  letter-spacing:-.25px;
+}
+.field-card-sub{
+  color:#334155!important;
+  font-size:14px!important;
+  font-weight:900!important;
+  margin:0 0 11px 0!important;
+}
+.field-grid-final{gap:10px!important;margin:10px 0 12px!important}
+.field-mini{
+  display:grid;
+  grid-template-columns:42px 1fr;
+  align-items:center;
+  gap:9px;
+  min-height:68px;
+  border:1px solid #dbe5ef!important;
+  background:linear-gradient(180deg,#ffffff,#f8fafc)!important;
+  border-radius:16px!important;
+  padding:10px!important;
+  box-shadow:0 6px 16px rgba(0,47,95,.05);
+}
+.field-mini .metric-icon{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#1f7a4d;
+  background:#f0f8f4;
+  border:1px solid #cfe7d8;
+  flex:0 0 auto;
+}
+.field-mini .metric-icon svg{width:28px;height:28px;display:block}
+.field-mini span{font-size:10.5px!important;letter-spacing:.02em;color:#51627a!important}
+.field-mini b{font-size:17px!important;letter-spacing:-.2px;color:#071d49!important;line-height:1.15!important;word-break:normal!important}
+.metric-cane .metric-icon,.metric-variety .metric-icon{color:#177245;background:#f7fbf8}
+.metric-age .metric-icon{color:#1f7a4d;background:#f8fbf8}
+.field-actions{gap:10px!important}
+.field-actions a,.field-actions button{border-radius:15px!important;font-size:13px!important;min-height:44px!important;box-shadow:0 6px 14px rgba(0,47,95,.08)}
+.field-actions .go-crono{background:linear-gradient(135deg,#1f7a4d,#188555)!important;color:#fff!important}
+.field-actions .go-hist{background:linear-gradient(135deg,#002f5f,#064b85)!important;color:#fff!important}
+.field-actions .go-zoom{background:#fff!important;border:1px solid rgba(0,47,95,.24)!important;color:#002f5f!important}
+.selected-card .field-card-owner{font-size:16px;margin-right:0}.selected-card .field-card-title{font-size:17px!important;margin-right:0!important}.selected-card .field-card-sub{font-size:12px!important}.selected-card .field-mini{grid-template-columns:34px 1fr;min-height:56px;padding:8px!important}.selected-card .field-mini .metric-icon{width:32px;height:32px;border-radius:10px}.selected-card .field-mini .metric-icon svg{width:22px;height:22px}.selected-card .field-mini b{font-size:13px!important}.selected-card .field-grid-final{gap:7px!important}
+@media(max-width:430px){.field-card-title{font-size:19px!important}.field-card-owner{font-size:17px}.field-mini{grid-template-columns:34px 1fr;min-height:62px;padding:8px!important}.field-mini .metric-icon{width:32px;height:32px;border-radius:10px}.field-mini .metric-icon svg{width:22px;height:22px}.field-mini b{font-size:14px!important}.field-actions a,.field-actions button{font-size:11px!important}}
+
+/* V5.4 · Tarjeta agronómica: semáforo, edad dinámica en días y resumen rápido */
+.agro-status{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;border-radius:14px;padding:8px 10px;margin:7px 0 9px;border:1px solid #e2e8f0;background:#f8fafc;color:#334155;font-size:11px;line-height:1.25}.agro-status b{font-size:12px;text-transform:uppercase;letter-spacing:.25px}.agro-status span{text-align:right;font-weight:750}.agro-status.good{background:#ecfdf5;border-color:#bbf7d0;color:#075e2d}.agro-status.warn{background:#fff8df;border-color:#fde68a;color:#684500}.agro-status.bad{background:#fff1f1;border-color:#fecaca;color:#7f1d1d}.agro-status.muted{background:#f1f5f9;border-color:#dbe5ef;color:#475569}.metric-note{display:block;margin-top:2px;color:#64748b;font-size:10px;font-weight:850}.quick-history{margin:3px 0 12px;border:1px solid #dbe5ef;border-radius:15px;background:#fbfdff;overflow:hidden}.quick-history summary{cursor:pointer;padding:9px 11px;font-weight:950;color:#002f5f;font-size:12px;list-style:none}.quick-history summary::-webkit-details-marker{display:none}.quick-history summary:after{content:'+';float:right;color:#1f7a4d}.quick-history[open] summary:after{content:'−'}.quick-history-grid{display:grid;grid-template-columns:120px 1fr;gap:0;border-top:1px solid #e5e9ef}.quick-history-grid span,.quick-history-grid b{padding:7px 10px;border-bottom:1px solid #edf2f7;font-size:11px}.quick-history-grid span{color:#64748b;font-weight:900;text-transform:uppercase}.quick-history-grid b{color:#172033}.quick-history.muted{padding:9px 11px;color:#64748b;font-size:12px;font-weight:800}
+@media(max-width:430px){.agro-status{display:block}.agro-status span{text-align:left;display:block;margin-top:3px}.quick-history-grid{grid-template-columns:1fr}.quick-history-grid span{padding-bottom:2px}.quick-history-grid b{padding-top:0}}
+
+/* V6 · Bitácora de campo */
+.extra-actions{margin:4px 0 12px}.obs-btn{width:100%;border:1px solid rgba(31,122,77,.22);background:#ecfdf5;color:#075e2d;border-radius:14px;padding:10px 11px;font-size:12px;font-weight:950;box-shadow:none}.obs-summary{border:1px solid #dbe5ef;background:#f8fafc;border-radius:14px;padding:10px;color:#334155;font-size:12px;font-weight:800;line-height:1.35}.obs-summary b{font-size:18px;color:#1f7a4d}.obs-modal.hidden{display:none}.obs-modal{position:fixed;inset:0;background:rgba(7,29,73,.45);z-index:2500;display:flex;align-items:center;justify-content:center;padding:16px}.obs-dialog{width:min(460px,100%);background:#fff;border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.28);padding:16px;border:1px solid #dbe5ef}.obs-dialog h3{margin:0 0 3px;color:#002f5f}.obs-dialog p{margin:0 0 10px;color:#64748b;font-weight:800}.obs-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.obs-dialog label{font-size:11px;font-weight:950;color:#334155;text-transform:uppercase}.obs-dialog select,.obs-dialog textarea{width:100%;border:1px solid #cbd5e1;border-radius:13px;padding:10px;margin-top:5px;font-family:inherit}.obs-dialog textarea{min-height:92px;resize:vertical}.obs-full{grid-column:1/-1}.obs-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.obs-actions button{border:0;border-radius:14px;padding:11px;font-weight:950}.obs-save{background:#1f7a4d;color:#fff}.obs-cancel{background:#eef4fb;color:#002f5f}.obs-mini-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.obs-mini-buttons button{font-size:11px;border-radius:12px;padding:9px}.obs-mini-buttons .danger{background:#fff1f1;color:#7f1d1d;border:1px solid #fecaca}@media(max-width:430px){.obs-grid{grid-template-columns:1fr}.obs-actions{grid-template-columns:1fr}.obs-modal{align-items:flex-end;padding:10px}.obs-dialog{border-radius:20px 20px 14px 14px}}
+
+/* V7 · Capas inteligentes */
+.layer-box{display:grid;gap:8px}.layer-check{display:flex;align-items:flex-start;gap:8px;border:1px solid #dbe5ef;background:#f8fafc;border-radius:13px;padding:9px;font-size:12px;font-weight:900;color:#334155}.layer-check input{margin-top:2px}.layer-summary{margin-top:9px;border-radius:13px;background:#fff8df;border:1px solid #fde68a;padding:9px;font-size:11px;line-height:1.35;color:#684500;font-weight:800}.layer-summary b{color:#002f5f}
+
+/* V8 · Modo recorrido */
+.route-summary{border:1px solid #dbe5ef;background:#f8fafc;border-radius:14px;padding:10px;color:#334155;font-size:12px;font-weight:800;line-height:1.35}.route-summary b{color:#005baa;font-size:16px}.route-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.route-buttons button{font-size:11px;border-radius:12px;padding:9px}.route-buttons .start{background:#1f7a4d;color:white}.route-buttons .stop{background:#002f5f;color:white}.route-buttons .export{background:#fff8df;color:#684500;border:1px solid #fde68a}.route-buttons .clear{background:#fff1f1;color:#7f1d1d;border:1px solid #fecaca}
+
+
+/* V9 · Ficha rápida offline por lote */
+.quick-ficha-row{margin-top:8px}.quick-ficha-row .quick-ficha-btn{width:100%;border:0;border-radius:14px;background:linear-gradient(135deg,#fff7df,#ffffff);border:1px solid #f4c542;color:#17324d;font-weight:950;padding:11px 12px;box-shadow:0 6px 16px rgba(15,23,42,.08);cursor:pointer}.quick-ficha-row .quick-ficha-btn:hover{transform:translateY(-1px)}
+.quick-ficha-modal{position:fixed;inset:0;background:rgba(2,8,23,.42);z-index:5000;display:flex;align-items:flex-end;justify-content:center;padding:12px}.quick-ficha-modal.hidden{display:none}.quick-ficha-dialog{width:min(760px,100%);max-height:92vh;overflow:auto;background:#fff;border:1px solid #dbe5dd;border-radius:24px;box-shadow:0 24px 70px rgba(2,8,23,.28);position:relative}.quick-ficha-close{position:absolute;right:12px;top:10px;border:0;border-radius:999px;width:34px;height:34px;background:#eef5f0;color:#0b6031;font-weight:950;font-size:20px;z-index:2}.quick-ficha-content{padding:18px}.quick-ficha-head{background:radial-gradient(circle at top right,rgba(244,197,66,.28),transparent 36%),linear-gradient(135deg,#07381d,#0b7f3a 58%,#005baa);border-radius:20px;color:#fff;padding:18px;margin-bottom:12px}.quick-ficha-head small{display:block;text-transform:uppercase;letter-spacing:.55px;font-size:10px;font-weight:950;opacity:.78}.quick-ficha-head h2{margin:4px 0 4px;font-size:25px;line-height:1.05}.quick-ficha-head p{margin:0;color:rgba(255,255,255,.88);font-weight:850}.quick-ficha-status{display:inline-flex;margin-top:10px;border-radius:999px;padding:7px 10px;font-weight:950;font-size:11px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.14)}.quick-ficha-status.good{background:#e9f9ef;color:#09612e;border-color:#bbf7d0}.quick-ficha-status.warn{background:#fff7df;color:#8a5a00;border-color:#fde68a}.quick-ficha-status.bad{background:#ffeded;color:#a30e0e;border-color:#fecaca}.quick-ficha-status.muted{background:#f1f5f9;color:#475569;border-color:#cbd5e1}.quick-ficha-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.qkpi{border:1px solid #dbe5dd;background:#fbfffc;border-radius:16px;padding:10px;min-height:70px}.qkpi span{display:block;font-size:10px;color:#64748b;font-weight:950;text-transform:uppercase;letter-spacing:.35px}.qkpi b{display:block;margin-top:4px;font-size:17px;color:#10241a}.quick-ficha-section{margin-top:12px;border:1px solid #e2e8f0;border-radius:18px;padding:12px;background:#fff}.quick-ficha-section h3{margin:0 0 8px;font-size:14px;color:#10241a}.quick-obs-list{display:grid;gap:7px}.quick-obs-item{border:1px solid #e2e8f0;border-radius:13px;padding:8px;background:#f8fafc}.quick-obs-item b{color:#10241a}.quick-obs-item small{display:block;color:#64748b;margin-top:2px}.quick-ficha-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.quick-ficha-actions a,.quick-ficha-actions button{border:0;border-radius:14px;padding:11px 12px;text-align:center;text-decoration:none;font-weight:950;cursor:pointer}.quick-ficha-actions .crono{background:#0b7f3a;color:#fff}.quick-ficha-actions .hist{background:#002f5f;color:#fff}.quick-ficha-actions .obs{background:#f4c542;color:#10241a}.quick-ficha-actions .close{background:#edf5ef;color:#0b6031}.quick-ficha-empty{padding:22px;text-align:center;color:#64748b;font-weight:850}
+@media(min-width:760px){.quick-ficha-modal{align-items:center}.quick-ficha-kpis{grid-template-columns:repeat(4,1fr)}}
+
+
+/* V10 · Visita de campo */
+.visit-summary{border:1px solid #dbe5dd;background:linear-gradient(180deg,#fff,#f8fffb);border-radius:16px;padding:10px;color:#10241a;font-weight:850;line-height:1.35}.visit-summary small{display:block;color:#64748b;font-weight:750;margin-top:3px}.visit-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.visit-buttons button{border:0;border-radius:13px;padding:10px 8px;font-weight:950;cursor:pointer}.visit-buttons .success{background:#0b7f3a;color:#fff}.visit-buttons .warning{background:#f4c542;color:#10241a}.visit-buttons .secondary{background:#e8f1ff;color:#0b4f9c}.visit-buttons .danger{background:#fee2e2;color:#991b1b}
+
+
+/* V11 · Reporte de visita HTML */
+.report-summary{border:1px solid #dbe5dd;background:#fff;border-radius:16px;padding:10px;color:#334155;font-weight:800;line-height:1.35}.report-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.report-buttons button{border:0;border-radius:13px;padding:10px 8px;font-weight:950;cursor:pointer}.report-buttons .primary{background:#002f5f;color:#fff}.report-buttons .secondary{background:#edf5ef;color:#0b6031}
+
+/* V13 · Panel agronómico de campo: reemplaza resumen técnico del shape */
+.field-panel-stack{display:grid;gap:9px}.field-panel-card{border:1px solid #dbe5dd;background:linear-gradient(180deg,#fff,#f8fafc);border-radius:16px;padding:11px;box-shadow:0 6px 16px rgba(2,8,23,.04);line-height:1.32}.field-panel-card span{display:block;font-size:10.5px;color:#64748b;font-weight:950;text-transform:uppercase;letter-spacing:.35px}.field-panel-card b{display:block;margin-top:4px;font-size:15px;color:#10241a;line-height:1.15}.field-panel-card small{display:block;margin-top:4px;color:#475569;font-size:11px;font-weight:800}.field-panel-card.gps-card{border-left:5px solid #005baa}.field-panel-card.lot-card{border-left:5px solid #0b7f3a}.field-panel-card.agro-card{border-left:5px solid #f4c542}.field-panel-card.visit-card{border-left:5px solid #002f5f}.field-panel-card.good{background:#ecfdf5;border-color:#bbf7d0}.field-panel-card.warn{background:#fff8df;border-color:#fde68a}.field-panel-card.bad{background:#fff1f1;border-color:#fecaca}.field-panel-card.muted{background:#f1f5f9;border-color:#cbd5e1}
+.orientation-controls{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:9px}.orientation-controls .orient{border:1px solid #dbe5ef;background:#f8fafc;color:#334155;border-radius:13px;padding:9px;font-size:11px;font-weight:950}.orientation-controls .orient.active{background:#002f5f;color:#fff;border-color:#002f5f;box-shadow:0 5px 13px rgba(0,47,95,.18)}
+
+/* V13 · Flecha de rumbo GPS */
+.gps-arrow-icon{background:transparent;border:0}.gps-arrow{width:34px;height:34px;border-radius:999px;background:rgba(0,91,170,.12);border:2px solid #0057ff;position:relative;box-shadow:0 0 0 5px rgba(0,87,255,.12),0 8px 18px rgba(2,8,23,.20);transform-origin:50% 50%}.gps-arrow:before{content:"";position:absolute;left:50%;top:-8px;transform:translateX(-50%);border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:14px solid #0057ff;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}.gps-arrow span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:10px;height:10px;background:#fff;border:3px solid #0057ff;border-radius:999px}.gps-arrow.no-heading:before{border-bottom-color:#94a3b8}.gps-arrow.no-heading{border-color:#94a3b8;box-shadow:0 0 0 5px rgba(148,163,184,.18)}
+
+/* V13 · Rumbo arriba opcional. Se mantiene desactivado por defecto para máxima precisión de clic. */
+#map{--casur-map-rotation:0deg;transition:transform .35s ease;transform-origin:50% 50%}#map.map-rotating{transform:rotate(var(--casur-map-rotation)) scale(1.12)}#map.map-rotating .leaflet-control-container{transform:rotate(calc(-1 * var(--casur-map-rotation))) scale(.90);transform-origin:50% 50%}
+
+/* V13 · Coordenadas GPS del centroide del polígono */
+.card-coords{display:flex;align-items:center;gap:8px;background:#f0f6ff;border:1px solid rgba(0,47,95,.18);border-radius:12px;padding:7px 10px;margin:7px 0 8px;font-size:11.5px;font-weight:800;color:#334155}.card-coords .coord-val{flex:1;font-family:'Courier New',monospace;font-size:10.5px;color:#002f5f;font-weight:900;letter-spacing:.01em}.card-coords .coord-lbl{font-size:10px;text-transform:uppercase;color:#64748b;font-weight:900;white-space:nowrap}.coord-copy-btn{border:0;border-radius:9px;background:#002f5f;color:#fff;font-size:10px;font-weight:900;padding:5px 9px;cursor:pointer;flex-shrink:0;white-space:nowrap;transition:.15s ease}.coord-copy-btn:hover{background:#064b85;transform:none}.coord-copy-btn.copied{background:#1f7a4d}
+.route-buttons .route-btn-wide{grid-column:1 / -1;background:#f0f6ff!important;color:#002f5f!important;border:1px solid rgba(0,47,95,.20)!important;font-weight:900}
+
+/* V13 · Impresión/PDF de campo: oculta mapa y prioriza tarjeta agronómica */
+@media print{
+  @page{margin:12mm}*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}html,body,#app{height:auto!important;overflow:visible!important;background:#fff!important}#app{display:block!important}.loader,.mapwrap{display:none!important}.sidebar{position:static!important;transform:none!important;width:100%!important;height:auto!important;overflow:visible!important;box-shadow:none!important;border:none!important;display:block!important}.brand{background:#002f5f!important;color:#fff!important;padding:12px 16px!important}.brand h1{font-size:17px!important}.brand p{display:none}.section{page-break-inside:avoid;border-bottom:1px solid #ddd!important;padding:10px 14px!important}.section h2{font-size:11px!important;margin-bottom:6px!important}.section:has(#gpsBehavior),.section:has(#btnStartRoute),.section:has(#installPwaBtn),.section:has(#btnGenerateReport){display:none!important}.panel-close,.mobile-actions,.mobile-toggle,.btnrow,#btnLocate,#btnFollow,#btnStop,.warning,.gps-readout,#gpsModeHint,#gpsStatusBar{display:none!important}.selected-card{border:2px solid #c9a227!important;page-break-inside:avoid}.field-actions,.obs-mini-buttons,.obs-btn,.extra-actions,.gps-inside-actions{display:none!important}details{display:block!important}.agro-status.good{background:#ecfdf5!important;border-color:#bbf7d0!important;color:#075e2d!important}.agro-status.warn{background:#fff8df!important;border-color:#fde68a!important;color:#684500!important}.agro-status.bad{background:#fff1f1!important;border-color:#fecaca!important;color:#7f1d1d!important}.field-card-title,.field-card-owner,.field-grid,.agro-status,.card-coords{page-break-inside:avoid}.brand::after{content:"Impresión generada por CASUR Maps V21.3 · Panel Auto-Close Real Overlay";display:block;font-size:9px;opacity:.7;margin-top:4px}
+}
+
+
+/* V14 · Navegación PRO y bloqueo de lote */
+.v14-nav-pro .btnrow{grid-template-columns:1fr 1fr}.lock-status{border:1px solid #dbe5dd;background:#f8fafc;border-radius:14px;padding:10px;font-size:12px;color:#334155;font-weight:800;line-height:1.35}.lock-status.locked{background:#fff8df;border-color:#f4c542;color:#684500}.gps-diagnostic{margin-top:9px;border:1px solid #dbe5dd;border-radius:14px;background:#fff;padding:10px;font-size:11.5px;color:#334155;font-weight:750;line-height:1.45}.gps-diagnostic b{color:#002f5f}.gps-precision-alert{margin-top:9px;border-radius:14px;background:#fff1f1;border:1px solid #fecaca;color:#7f1d1d;padding:9px 10px;font-size:11.5px;font-weight:850}.gps-precision-alert.hidden{display:none}.gps-lock-chip{display:inline-flex;gap:5px;align-items:center;background:#fff8df;border:1px solid #f4c542;color:#684500;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:950;margin-top:6px}.field-panel-card.locked-lot{border-color:#f4c542;background:#fffdf2}.orientation-controls .orient.active{box-shadow:0 0 0 2px rgba(244,197,66,.35)}@media(max-width:560px){.v14-nav-pro .btnrow{grid-template-columns:1fr}.v14-lock-buttons button,.v14-center-buttons button{width:100%}}
+
+
+/* V15 · Campo offline básico */
+.connectivity-badge{border-radius:999px;padding:6px 10px;font-size:11px;font-weight:950;border:1px solid #bbf7d0;background:#ecfdf5;color:#075e2d}.connectivity-badge.offline{background:#fff8df;border-color:#f4c542;color:#684500}.offline-map-notice{position:absolute;z-index:820;top:62px;left:50%;transform:translateX(-50%);max-width:92%;background:#fff8df;border:1px solid #f4c542;color:#684500;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:900;box-shadow:0 10px 25px rgba(15,23,42,.16)}.offline-map-notice.hidden{display:none}.offline-panel{border-radius:14px;border:1px solid #dbe5dd;background:#ecfdf5;color:#075e2d;padding:10px;font-size:12px;font-weight:850;line-height:1.35}.offline-panel.offline{background:#fff8df;border-color:#f4c542;color:#684500}
+
+
+/* V16 · Sincronización de datos */
+.sync-panel{border:1px solid #dbe5dd;background:#f8fafc;border-radius:14px;padding:10px;color:#334155;font-size:12px;font-weight:800;line-height:1.4}.sync-panel b{color:#002f5f}.sync-panel small{color:#64748b;font-weight:750}
+
+
+/* V17 · Reporte ejecutivo */
+.report-buttons{display:grid;grid-template-columns:1fr;gap:7px}.report-buttons .warning{background:#f4c542;color:#18301f}@media(min-width:760px){.report-buttons{grid-template-columns:1fr 1fr}.report-buttons #btnPreviewReport{grid-column:1 / -1}}
+
+
+/* V18 · Fotos georreferenciadas */
+.photo-capture-box{border:1px solid #dbe5dd;background:#f8fafc;border-radius:14px;padding:10px;display:grid;gap:8px}.photo-label{font-size:12px;font-weight:900;color:#002f5f}.photo-label input{display:block;margin-top:6px;width:100%;font-size:12px}.photo-preview{border:1px dashed #cbd5e1;border-radius:12px;background:#fff;min-height:44px;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:11px;font-weight:800;overflow:hidden}.photo-preview img{width:100%;max-height:170px;object-fit:cover;display:block}.quick-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:8px}.quick-photo{border:1px solid #dbe5dd;border-radius:12px;overflow:hidden;background:#fff}.quick-photo img{width:100%;height:76px;object-fit:cover;display:block}.quick-photo small{display:block;padding:5px;font-size:9.5px;color:#64748b;font-weight:800}.obs-photo-chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;background:#e8f1ff;color:#0b4f9c;border:1px solid #c7dcff;padding:4px 7px;font-size:10px;font-weight:900;margin-top:4px}@media(max-width:560px){.quick-photo-grid{grid-template-columns:repeat(2,1fr)}}
+
+
+/* V19 · Fixes acumulativos */
+
+/* Fix: route-summary small debe ser block para mostrar lotes en línea separada */
+.route-summary small{display:block;color:#64748b;font-size:11px;font-weight:800;margin-top:3px}
+
+/* Fix: print brand::after versión correcta */
+
+/* Lightbox de fotos: visor a pantalla completa */
+.photo-lightbox{position:fixed;inset:0;z-index:9000;background:rgba(2,8,23,.88);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px)}
+.photo-lightbox.hidden{display:none}
+.photo-lb-wrap{width:min(700px,100%);display:flex;flex-direction:column;align-items:center;gap:10px}
+.photo-lb-wrap img{width:100%;max-height:72vh;object-fit:contain;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.photo-lb-meta{color:rgba(255,255,255,.80);font-size:12px;font-weight:850;text-align:center;line-height:1.45}
+.photo-lb-wrap button{background:#fff;color:#002f5f;border:0;border-radius:999px;padding:9px 18px;font-weight:950;cursor:pointer;font-size:13px}
+.photo-lb-wrap button:hover{background:#e8f1ff}
+
+/* Galería panel */
+.photo-gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+.photo-gallery-grid .quick-photo img{height:68px}
+@media(max-width:430px){.photo-gallery-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* quick-photo cursor pointer para indicar que es clickeable */
+.quick-photo{cursor:pointer;transition:.12s ease}.quick-photo:hover{opacity:.88;transform:scale(.98)}
+
+/* V19.3 · nota de búsqueda CodLote */
+.search-note{border:1px solid #cfe7d8;background:#f0fbf5;border-radius:14px;padding:9px 10px;margin:0 0 8px;color:#10241a;font-size:12px;line-height:1.35}.search-note b{color:#075e2d}
+
+/* V20 · Estilo adaptativo para vista satélite / alto contraste */
+.visual-mode-box{border:1px solid #dbe5ef;background:linear-gradient(180deg,#fff,#f8fafc);border-radius:15px;padding:10px;margin-bottom:10px;box-shadow:0 6px 16px rgba(0,47,95,.05)}
+.visual-mode-label{display:grid;gap:6px;font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.06em;color:#002f5f}
+.visual-mode-label .control{text-transform:none;letter-spacing:0;font-weight:750;color:#172033;margin-top:2px}
+body.map-visual-satellite .codlote-label,body.map-visual-highcontrast .codlote-label{background:rgba(15,23,42,.86)!important;border:1px solid rgba(255,255,255,.78)!important;color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,.9)!important;box-shadow:0 0 0 2px rgba(0,0,0,.36),0 6px 16px rgba(0,0,0,.45)!important}
+body.map-visual-satellite .legend,body.map-visual-highcontrast .legend{background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid rgba(15,23,42,.18)}
+body.map-visual-satellite .leaflet-interactive,body.map-visual-highcontrast .leaflet-interactive{filter:drop-shadow(0 0 2px rgba(0,0,0,.36))}
+body.map-visual-highcontrast .leaflet-interactive{filter:drop-shadow(0 0 3px rgba(255,255,255,.75)) drop-shadow(0 0 2px rgba(0,0,0,.65))}
+
+
+/* V20.2 · Leyenda visual de rendimiento adaptada para satélite */
+.rend-legend{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:5px;color:#334155;font-weight:850}
+.rend-swatch{display:inline-block;width:22px;height:8px;border-radius:999px;vertical-align:middle;box-shadow:0 0 0 1px rgba(15,23,42,.18)}
+.rend-swatch.crit{background:#ef233c}
+.rend-swatch.low{background:repeating-linear-gradient(90deg,#ff7a00 0 8px,transparent 8px 12px);border:1px solid #ff7a00;background-color:#fff4df}
+.rend-swatch.high{background:repeating-linear-gradient(90deg,#00bcd4 0 3px,transparent 3px 7px);border:1px solid #00bcd4;background-color:#e0fbff}
+.rend-swatch.high.normal{background:#0b7f3a;border-color:#075e2d}
+body.map-visual-satellite .layer-summary,body.map-visual-highcontrast .layer-summary{background:rgba(255,255,255,.94);border-color:rgba(15,23,42,.22);color:#172033;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+
+
+/* V20.3 · Header oficial CASUR + control de capas libre */
+.brand-casur-official{
+  padding:14px 16px 13px;
+  background:linear-gradient(135deg,#ffffff 0%,#f9fbff 64%,#eef6f0 100%);
+  color:var(--azul);
+  border-bottom:4px solid var(--verde);
+}
+.brand-logo-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  margin:0 0 8px;
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(0,47,95,.10);
+  border-radius:16px;
+  padding:8px 10px;
+  box-shadow:0 8px 22px rgba(0,47,95,.08);
+}
+.brand-logo-casur{
+  display:block;
+  width:min(246px,100%);
+  height:auto;
+  object-fit:contain;
+}
+.brand-casur-official .eyebrow{
+  color:#064b85;
+  opacity:1;
+  font-weight:950;
+  letter-spacing:.12em;
+}
+.brand-casur-official h1{
+  color:#002f5f;
+  font-size:24px;
+  margin:4px 0 2px;
+  letter-spacing:-.02em;
+}
+.brand-casur-official .pill{
+  background:#eef7f1;
+  border:1px solid rgba(31,122,77,.22);
+  color:#075e2d;
+}
+/* El badge flotante se retira para no tapar el selector de capas de Leaflet. */
+.topbar{
+  justify-content:flex-start;
+  right:auto;
+  max-width:calc(100% - 76px);
+}
+.topbar .badge{display:none!important}
+.leaflet-top.leaflet-right{
+  top:12px!important;
+  right:12px!important;
+  z-index:950!important;
+}
+.leaflet-control-layers{
+  z-index:960!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.18)!important;
+}
+@media(max-width:860px){
+  .brand-logo-casur{width:min(230px,100%)}
+  .brand-casur-official h1{font-size:22px}
+  .topbar{left:10px;right:auto;max-width:calc(100% - 70px)}
+}
+@media print{
+  .brand-logo-wrap{display:none!important}
+  .brand-casur-official{background:#002f5f!important;color:#fff!important;border-bottom:3px solid #c9a227!important}
+  .brand-casur-official h1,.brand-casur-official .eyebrow{color:#fff!important}
+}
+
+
+/* V20.4 · Header final + Medición de campo */
+.brand-casur-official .brand-subtitle{
+  margin:2px 0 0;
+  color:#1f7a4d;
+  font-size:12.5px;
+  line-height:1.25;
+  font-weight:850;
+  letter-spacing:.015em;
+}
+.measure-section{
+  background:linear-gradient(180deg,#ffffff 0%,#fbfffc 100%);
+}
+.measure-status{
+  border:1px solid rgba(0,47,95,.14);
+  background:#f8fafc;
+  border-radius:14px;
+  padding:9px 10px;
+  color:#334155;
+  font-size:12.5px;
+  font-weight:800;
+  margin-bottom:9px;
+}
+.measure-status.active-distance{border-color:#0d5d91;background:#eef7ff;color:#002f5f}
+.measure-status.active-area{border-color:#1f7a4d;background:#eef9f2;color:#075e2d}
+.measure-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.measure-grid button.active{
+  background:var(--azul);
+  color:#fff;
+  border-color:var(--azul);
+}
+.measure-grid #btnMeasureArea.active{
+  background:var(--verde);
+  color:#fff;
+  border-color:var(--verde);
+}
+.measure-result{
+  margin-top:9px;
+  border:1px solid rgba(31,122,77,.18);
+  border-left:5px solid var(--verde);
+  border-radius:14px;
+  padding:10px;
+  background:#fff;
+  color:#172033;
+  font-size:12.5px;
+  line-height:1.42;
+  box-shadow:0 8px 18px rgba(0,47,95,.05);
+}
+.measure-result b{color:var(--azul)}
+body.measure-active #map{cursor:crosshair!important}
+.measure-point-label{
+  background:#002f5f;
+  color:#fff;
+  border:2px solid #fff;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:950;
+  padding:2px 6px;
+  box-shadow:0 4px 12px rgba(0,0,0,.24);
+}
+.measure-distance-label{
+  background:rgba(255,255,255,.96);
+  color:#002f5f;
+  border:1px solid rgba(0,47,95,.18);
+  border-radius:999px;
+  font-size:11px;
+  font-weight:950;
+  padding:4px 8px;
+  box-shadow:0 6px 16px rgba(0,0,0,.16);
+}
+body.map-visual-satellite .measure-distance-label,
+body.map-visual-highcontrast .measure-distance-label{
+  background:rgba(2,8,23,.86);
+  color:#fff;
+  border-color:rgba(255,255,255,.45);
+}
+@media(max-width:860px){
+  .brand-casur-official .brand-subtitle{font-size:12px}
+  .measure-grid button{padding:10px 8px;font-size:12px}
+}
+@media print{
+  .measure-section{display:none!important}
+  .brand-casur-official .brand-subtitle{color:#fff!important;opacity:.9!important}
+}
+
+
+/* V21.1 · Capas siempre accesibles + medición flotante + ayuda colapsable */
+.leaflet-control-container,
+.leaflet-top,
+.leaflet-right,
+.leaflet-control-layers{
+  pointer-events:auto!important;
+}
+.leaflet-control-container{z-index:1700!important}
+.leaflet-top.leaflet-right{top:12px!important;right:12px!important;z-index:1700!important}
+.leaflet-control-layers{z-index:1750!important;box-shadow:0 14px 34px rgba(0,0,0,.24)!important;border:2px solid rgba(255,255,255,.78)!important}
+.section-toggle-row{width:100%;border:0;background:transparent;text-align:left;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:0;margin:0;cursor:pointer;color:inherit}
+.section-toggle-row b{display:block;color:var(--azul);font-size:14px;line-height:1.15}
+.section-toggle-row small{display:block;margin-top:4px;color:#64748b;font-size:11px;line-height:1.3;font-weight:750}
+.section-toggle-row i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#eef4fb;color:var(--azul);font-weight:950;flex:0 0 auto}
+.collapsible-section .section-body{display:none;margin-top:10px}
+.collapsible-section.open .section-body{display:block}
+.collapsible-section.open .section-toggle-row i{background:var(--azul);color:#fff}
+.measure-unit-selectors{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 9px}
+.measure-unit-selectors label{font-size:10.5px;font-weight:950;color:#64748b;text-transform:uppercase;letter-spacing:.25px}
+.measure-unit-selectors select{margin-top:4px;font-size:12px;padding:9px}
+.measure-main-value{display:block;font-size:18px;font-weight:950;color:#002f5f;margin:4px 0 2px;line-height:1.12}
+.measure-alt-values{display:block;font-size:11.5px;font-weight:850;color:#475569;line-height:1.28;margin-bottom:4px}
+.measure-floating-toolbar{position:absolute;z-index:1550;right:16px;bottom:92px;width:min(360px,calc(100vw - 32px));background:rgba(255,255,255,.96);border:1px solid rgba(0,47,95,.16);border-left:5px solid var(--dorado);border-radius:20px;box-shadow:0 20px 50px rgba(0,0,0,.24);padding:12px;backdrop-filter:blur(14px)}
+.measure-floating-toolbar.hidden{display:none!important}
+.measure-float-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.measure-float-head strong{display:block;color:var(--azul);font-size:14px;line-height:1.15}
+.measure-float-head small{display:block;color:#64748b;font-size:11px;font-weight:750;margin-top:3px;line-height:1.25}
+.measure-float-head button{width:30px;height:30px;border-radius:999px;border:1px solid #dbe5dd;background:#f8fafc;color:#334155;font-size:18px;font-weight:950;line-height:1;cursor:pointer;flex:0 0 auto}
+.measure-float-result{border:1px solid #e2e8f0;background:#f8fafc;border-radius:14px;padding:9px 10px;font-size:12px;line-height:1.35;color:#172033;margin-bottom:9px}
+.measure-float-result b{display:block;color:#002f5f;margin-top:4px}
+.measure-float-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.measure-float-actions button{padding:9px 8px;font-size:11.5px;border-radius:12px}
+body.map-visual-satellite .measure-floating-toolbar,
+body.map-visual-highcontrast .measure-floating-toolbar{background:rgba(2,8,23,.88);color:#fff;border-color:rgba(255,255,255,.25)}
+body.map-visual-satellite .measure-float-head strong,
+body.map-visual-highcontrast .measure-float-head strong{color:#fff}
+body.map-visual-satellite .measure-float-head small,
+body.map-visual-highcontrast .measure-float-head small{color:rgba(255,255,255,.78)}
+body.map-visual-satellite .measure-float-result,
+body.map-visual-highcontrast .measure-float-result{background:rgba(15,23,42,.75);border-color:rgba(255,255,255,.18);color:#fff}
+body.map-visual-satellite .measure-main-value,
+body.map-visual-highcontrast .measure-main-value{color:#f4c542}
+body.map-visual-satellite .measure-alt-values,
+body.map-visual-highcontrast .measure-alt-values{color:rgba(255,255,255,.8)}
+@media(max-width:860px){
+  .measure-floating-toolbar{left:10px;right:10px;bottom:74px;width:auto;border-radius:18px;padding:10px}
+  .measure-float-actions{grid-template-columns:repeat(3,1fr)}
+  .measure-unit-selectors{grid-template-columns:1fr}
+}
+@media print{.measure-floating-toolbar{display:none!important}.section-toggle-row small{display:none!important}.collapsible-section .section-body{display:block!important}}
+
+
+/* V21.2 · Panel Auto-Close UX FIX
+   En móvil, al abrir el panel se muestra un overlay discreto. Tocar fuera del panel lo cierra.
+   Durante medición activa el overlay se desactiva para no impedir agregar puntos. */
+@media(max-width:860px){
+  body.sidebar-open::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:1350;
+    background:rgba(7,29,73,.22);
+    backdrop-filter:blur(1.5px);
+    -webkit-backdrop-filter:blur(1.5px);
+    pointer-events:auto;
+  }
+  body.sidebar-open.measure-active::before{
+    display:none;
+  }
+  body.sidebar-open .sidebar{
+    z-index:1450;
+  }
+  body.sidebar-open .topbar,
+  body.sidebar-open .mobile-actions{
+    z-index:1300;
+  }
+}
+
+
+/* V21.3 · Panel Auto-Close con overlay real para móvil */
+@media(max-width:860px){
+  body.sidebar-open::before{display:none!important;content:none!important;pointer-events:none!important;}
+  .sidebar-backdrop{
+    position:fixed;
+    inset:0;
+    z-index:1340;
+    background:rgba(7,29,73,.22);
+    backdrop-filter:blur(1.5px);
+    -webkit-backdrop-filter:blur(1.5px);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .18s ease;
+  }
+  body.sidebar-open .sidebar-backdrop{
+    opacity:1;
+    pointer-events:auto;
+  }
+  body.sidebar-open.measure-active .sidebar-backdrop{
+    display:none!important;
+    pointer-events:none!important;
+  }
+  body.sidebar-open .sidebar{z-index:1450;}
+}
+@media(min-width:861px){.sidebar-backdrop{display:none!important;}}

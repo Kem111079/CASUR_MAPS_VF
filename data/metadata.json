@@ -1,0 +1,29 @@
+{
+  "nombre": "CASUR Maps PWA V1",
+  "fuente": "Shape_Minimo_IV_CASUR_JOIN(1).gpkg",
+  "capa": "shape_minimo_iv_casur",
+  "crs_original": "EPSG:32616",
+  "crs_publicacion": "EPSG:4326 / WGS84",
+  "poligonos": 8575,
+  "campos_publicados": [
+    "LLAVE_LOTE",
+    "LLAVE_TABL",
+    "Codfinca",
+    "Suerte",
+    "CodSuerte",
+    "Tablon",
+    "ERP",
+    "Area_Ha",
+    "Area_Mz",
+    "ID_POLY",
+    "CoordX",
+    "CoordY"
+  ],
+  "bounds_wgs84": [
+    -86.0839369,
+    11.2172857,
+    -85.5953462,
+    11.7873327
+  ],
+  "nota_gps": "El GPS requiere HTTPS o localhost. En celular, publicar en HTTPS para instalar y usar ubicación."
+}

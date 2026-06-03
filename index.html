@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#002f5f" />
+  <meta name="description" content="CASUR Maps · Departamento de Negocios de Caña." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="CASUR Maps" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>CASUR Maps · Departamento de Negocios de Caña</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16.png" />
+  <link rel="stylesheet" href="./styles.css?v=21_3_panel_autoclose_real_overlay" />
+</head>
+<body>
+  <div id="loader" class="loader"><div class="loader-card"><h2>CASUR Maps</h2><p id="loaderText">Cargando CASUR Maps...</p><div class="progress"><span></span></div></div></div>
+  <div id="app">
+    <aside class="sidebar" id="sidebar">
+      <button id="panelCloseBtn" class="panel-close" type="button" aria-label="Cerrar panel">✕ Cerrar panel</button>
+      <div class="brand brand-casur-official">
+        <div class="brand-logo-wrap">
+          <img src="./assets/logo_casur.png" alt="CASUR · Compañía Azucarera del Sur, S.A." class="brand-logo-casur" />
+        </div>
+        <div class="eyebrow">Departamento de Negocios de Caña</div>
+        <h1>CASUR Maps</h1>
+        <div class="brand-subtitle">Mapa inteligente de lotes cañeros</div>
+        <div class="pill"><span id="gpsDot" class="dot"></span><span id="statusText">GPS sin activar</span></div>
+      </div>
+      <section class="section field-panel-section">
+        <h2>Panel agronómico de campo</h2>
+        <div class="field-panel-stack">
+          <div class="field-panel-card gps-card" id="fieldGpsPanel">
+            <span>GPS / navegación</span>
+            <b>GPS sin activar</b>
+            <small>Active GPS para ver precisión, velocidad, rumbo y modo de orientación.</small>
+          </div>
+          <div class="field-panel-card lot-card" id="fieldLotPanel">
+            <span>Lote actual / seleccionado</span>
+            <b>Sin lote seleccionado</b>
+            <small>Toque un polígono o active GPS para detectar CodLote.</small>
+          </div>
+          <div class="field-panel-card agro-card" id="fieldAgroPanel">
+            <span>Lectura agronómica</span>
+            <b>Sin datos</b>
+            <small>TCH, edad, variedad y semáforo aparecerán al seleccionar un lote.</small>
+          </div>
+          <div class="field-panel-card visit-card" id="fieldVisitPanel">
+            <span>Visita / recorrido</span>
+            <b>Sin visita activa</b>
+            <small>Inicie recorrido o visita para registrar trazabilidad de campo.</small>
+          </div>
+        </div>
+      </section>
+      <section class="section">
+        <h2>Buscar / filtrar</h2>
+        <input id="searchBox" class="control" placeholder="Buscar CodLote..." inputmode="text" autocomplete="off" />
+        <div class="btnrow"><button id="btnSearch" class="primary">Buscar</button><button id="btnReset" class="secondary">Restaurar</button></div>
+        <select id="fincaFilter" class="control" style="margin-top:9px"><option value="">Todas las fincas</option></select>
+        <div class="hint">Ingrese el CodLote exacto. Si el lote tiene varios polígonos/tablones, la app centra el conjunto del CodLote.</div>
+      </section>
+      <section class="section">
+        <h2>GPS de campo</h2>
+        <select id="gpsBehavior" class="control" style="margin-bottom:9px">
+          <option value="silencioso" selected>UX Silencioso · recomendado en carro</option>
+          <option value="asistido">UX Asistido · sugiere al detenerse</option>
+          <option value="preciso">UX Preciso · abre panel de decisión</option>
+        </select>
+        <select id="gpsMode" class="control" style="margin-bottom:9px">
+          <option value="vehiculo" selected>Modo Vehículo/Campo · recomendado</option>
+          <option value="campo">Modo Campo · caminando</option>
+          <option value="preciso">Modo Preciso · punto fijo</option>
+        </select>
+        <div class="orientation-controls" role="group" aria-label="Orientación del mapa">
+          <button id="btnNorthUp" class="orient active" type="button">Norte arriba</button>
+          <button id="btnCourseUp" class="orient" type="button">Rumbo arriba</button>
+        </div>
+        <div id="gpsModeHint" class="hint">UX silencioso + Modo V5 inteligente: Vehículo/Campo.</div>
+        <div class="btnrow"><button id="btnLocate" class="success">Activar GPS</button><button id="btnFollow" class="secondary">Seguirme</button></div>
+        <button id="btnStop" class="danger" style="width:100%;margin-top:8px">Detener GPS</button>
+        <div id="gpsInfo" class="gps-readout">Abra desde HTTPS o localhost. La V5.1 calcula lote/borde/camino en silencio y solo muestra una barra pequeña; el panel se abre al tocar “Ver”.</div>
+      </section>
+
+      <section class="section v14-nav-pro">
+        <h2>Navegación PRO</h2>
+        <div id="lockLotStatus" class="lock-status">Sin lote bloqueado.</div>
+        <div class="btnrow v14-lock-buttons">
+          <button id="btnLockLot" class="warning" type="button">Bloquear lote actual</button>
+          <button id="btnUnlockLot" class="secondary" type="button">Desbloquear</button>
+        </div>
+        <div class="btnrow v14-center-buttons">
+          <button id="btnCenterSelectedLot" class="secondary" type="button">Centrar lote detectado</button>
+          <button id="btnCenterGpsPro" class="secondary" type="button">Centrar GPS</button>
+        </div>
+        <div id="gpsDiagnosticPanel" class="gps-diagnostic">Precisión, velocidad y rumbo aparecerán al activar GPS.</div>
+        <div id="gpsPrecisionAlert" class="gps-precision-alert hidden">Precisión GPS baja. Use selección manual o bloquee el lote correcto.</div>
+      </section>
+
+      <section class="section">
+        <h2>Visita de campo</h2>
+        <div id="visitSummary" class="visit-summary">Sin visita activa.</div>
+        <div class="visit-buttons">
+          <button id="btnStartVisit" class="success" type="button">Iniciar visita</button>
+          <button id="btnFinishVisit" class="warning" type="button">Finalizar</button>
+          <button id="btnExportVisits" class="secondary" type="button">Exportar CSV</button>
+          <button id="btnClearVisits" class="danger" type="button">Borrar</button>
+        </div>
+        <div class="hint">La visita guarda trazabilidad local: tiempo, puntos GPS, lotes visitados y observaciones relacionadas.</div>
+      </section>
+
+      <section class="section">
+        <h2>Reporte de visita</h2>
+        <div id="reportSummary" class="report-summary">Genere un reporte HTML imprimible desde la última visita guardada.</div>
+        <div class="report-buttons">
+          <button id="btnGenerateReport" class="primary" type="button">Generar reporte HTML</button>
+          <button id="btnGenerateExecutiveReport" class="warning" type="button">Generar reporte ejecutivo</button>
+          <button id="btnPreviewReport" class="secondary" type="button">Vista previa</button>
+        </div>
+        <div class="hint">El reporte se descarga como HTML y se puede imprimir en PDF desde el navegador.</div>
+      </section>
+      <section class="section">
+        <h2>Modo recorrido</h2>
+        <div id="routeSummary" class="route-summary">Detenido · 0 puntos GPS · 0 lotes visitados</div>
+        <div class="route-buttons">
+          <button id="btnStartRoute" class="start" type="button">Iniciar</button>
+          <button id="btnStopRoute" class="stop" type="button">Detener</button>
+          <button id="btnZoomRoute" class="route-btn-wide secondary" type="button">⌖ Ver recorrido en mapa</button>
+          <button id="btnExportRoute" class="export" type="button">Exportar CSV</button>
+          <button id="btnClearRoute" class="clear" type="button">Limpiar</button>
+        </div>
+        <div class="hint">Registra puntos GPS cada 1.5 s, distancia real, duración, lote cercano/visitado y exportación CSV con resumen.</div>
+      </section>
+      <section class="section">
+        <h2>Capas inteligentes</h2>
+        <div class="visual-mode-box">
+          <label class="visual-mode-label">Estilo de polígonos
+            <select id="polygonVisualMode" class="control">
+              <option value="auto" selected>Automático según mapa</option>
+              <option value="normal">Normal · mapa claro</option>
+              <option value="satellite">Satélite · halo blanco</option>
+              <option value="highContrast">Alto contraste · campo</option>
+            </select>
+          </label>
+          <div id="polygonVisualHint" class="hint">Automático: al usar Satélite se refuerzan bordes, halo y etiquetas.</div>
+        </div>
+        <div class="layer-box">
+          <label class="layer-check"><input id="layerLabels" type="checkbox" checked> Etiquetas CodLote</label>
+          <label class="layer-check"><input id="layerTchUnder40" type="checkbox"> Resaltar TCH &lt; 40 t/ha</label>
+          <label class="layer-check"><input id="layerTchUnder50" type="checkbox"> Resaltar TCH &lt; 50 t/ha</label>
+          <label class="layer-check"><input id="layerTchOver70" type="checkbox"> Resaltar TCH &gt; 70 t/ha</label>
+          <label class="layer-check"><input id="layerAgeUnder3" type="checkbox"> Resaltar edad &lt; 3 meses</label>
+          <label class="layer-check"><input id="layerAge4to6" type="checkbox"> Resaltar edad 4 a 6 meses</label>
+          <label class="layer-check"><input id="layerAgeOver6" type="checkbox"> Resaltar edad &gt; 6 meses</label>
+          <label class="layer-check"><input id="layerVariety" type="checkbox"> Resaltar variedad seleccionada</label>
+          <select id="layerVarietyValue" class="control"><option value="">Seleccione variedad</option></select>
+        </div>
+        <div id="layerSummary" class="layer-summary">Active una capa para resumir polígonos resaltados.</div>
+      </section>
+
+      <section class="section measure-section">
+        <h2>Medición de campo</h2>
+        <div id="measureModeLabel" class="measure-status">Medición detenida.</div>
+        <div class="measure-unit-selectors">
+          <label>Unidad distancia
+            <select id="measureDistanceUnit" class="control">
+              <option value="auto" selected>Auto · m/km</option>
+              <option value="m">Metros</option>
+              <option value="km">Kilómetros</option>
+            </select>
+          </label>
+          <label>Unidad área
+            <select id="measureAreaUnit" class="control">
+              <option value="auto" selected>Auto · m²/ha/mz</option>
+              <option value="m2">m²</option>
+              <option value="ha">ha</option>
+              <option value="mz">mz</option>
+            </select>
+          </label>
+        </div>
+        <div class="measure-grid">
+          <button id="btnMeasureDistance" class="secondary" type="button">Medir longitud</button>
+          <button id="btnMeasureArea" class="secondary" type="button">Medir área</button>
+          <button id="btnMeasureUndo" class="secondary" type="button">Deshacer punto</button>
+          <button id="btnMeasureClear" class="danger" type="button">Limpiar</button>
+        </div>
+        <div id="measureResult" class="measure-result">Active medición y toque el mapa para agregar puntos.</div>
+        <div class="hint">Mientras la medición esté activa, los toques en el mapa agregan puntos y no abren la tarjeta del lote. Use limpiar para volver al flujo normal.</div>
+      </section>
+      <section class="section">
+        <h2>Bitácora de campo</h2>
+        <div id="obsSummary" class="obs-summary">Sin observaciones guardadas en este dispositivo.</div>
+        <div class="obs-mini-buttons"><button id="obsExport" class="secondary" type="button">Exportar CSV</button><button id="obsClear" class="danger" type="button">Limpiar</button><button id="btnClearPhotos" class="danger" type="button">Borrar fotos</button></div>
+        <div class="hint">Las observaciones se guardan localmente en este celular/navegador hasta exportarlas.</div>
+      </section>
+      <section class="section">
+        <h2>Galería de fotos</h2>
+        <div id="photoGallerySummary" class="obs-summary">Sin fotos guardadas en este dispositivo.</div>
+        <div class="hint">Las fotos se guardan en IndexedDB de este dispositivo. Para verlas por lote use la Ficha rápida offline.</div>
+      </section>
+      <section class="section">
+        <h2>Estado offline</h2>
+        <div id="offlinePanel" class="offline-panel">Online · mapa base disponible según conexión.</div>
+        <div class="hint">En modo sin señal básico se mantienen polígonos, GPS, ficha rápida, observaciones, visita y recorrido locales.</div>
+      </section>
+      <section class="section">
+        <h2>Actualización de datos</h2>
+        <div class="sync-panel"><b>Flujo seguro:</b><br>Excel maestro → JSON → GitHub Desktop/carga manual.<br><small>Use la carpeta tools/ para generar metricas_lote.json, metadata_metricas.json y update_log.json.</small></div>
+      </section>
+      <section class="section">
+        <h2>PWA / instalación</h2>
+        <button id="installPwaBtn" class="warning" style="width:100%">Instalar como app</button>
+        <div class="hint browser-only">En computadora use el BAT incluido para abrir en localhost. En celular, publique la carpeta en HTTPS y luego use “Agregar a pantalla de inicio”.</div>
+        <div class="hint pwa-only">Está corriendo como app instalada.</div>
+      </section>
+      <section class="section">
+        <h2>Lote seleccionado</h2>
+        <div id="selectedInfo" class="selected-card">Seleccione un polígono para abrir Cronológico o Histórico.</div>
+      </section>
+    </aside>
+    <div id="sidebarBackdrop" class="sidebar-backdrop" aria-hidden="true"></div>
+    <main class="mapwrap">
+      <div class="topbar"><button id="mobileToggle" class="mobile-toggle">☰ Panel</button><div id="connectivityBadge" class="connectivity-badge online">Online</div></div>
+      <div class="mobile-actions"><button id="btnGpsFloating" class="success" type="button">GPS</button><button id="btnPanelFloating" class="secondary" type="button">Panel</button></div>
+      <div id="offlineMapNotice" class="offline-map-notice hidden">Mapa base no disponible. Polígonos CASUR y GPS siguen activos.</div>
+      <div id="map"></div>
+
+      <div id="measureFloatingToolbar" class="measure-floating-toolbar hidden" aria-live="polite">
+        <div class="measure-float-head">
+          <div><strong id="measureFloatTitle">Medición de campo</strong><small id="measureFloatSub">Active longitud o área y toque el mapa.</small></div>
+          <button id="btnMeasureFloatClose" type="button" aria-label="Cerrar medición">×</button>
+        </div>
+        <div id="measureFloatResult" class="measure-float-result">Sin medición activa.</div>
+        <div class="measure-float-actions">
+          <button id="btnMeasureFloatUndo" class="secondary" type="button">Deshacer</button>
+          <button id="btnMeasureFloatClear" class="danger" type="button">Limpiar</button>
+          <button id="btnMeasureFloatFinish" class="success" type="button">Finalizar</button>
+        </div>
+      </div>
+
+      <div id="gpsStatusBar" class="gps-status-bar hidden" aria-live="polite">
+        <div class="gps-status-copy">
+          <strong id="gpsStatusMain">GPS sin activar</strong>
+          <small id="gpsStatusSub">Active GPS para detectar lote sin abrir panel.</small>
+        </div>
+        <div class="gps-status-actions">
+          <button id="gpsStatusAction" class="gps-status-action" type="button">Ver</button>
+          <button id="gpsStatusHide" class="gps-status-hide" type="button" aria-label="Ocultar aviso">×</button>
+        </div>
+      </div>
+
+      <div id="selectionSheet" class="selection-sheet collapsed" aria-live="polite">
+        <button id="sheetCloseBtn" class="sheet-close" type="button" aria-label="Cerrar selección">×</button>
+        <div id="sheetContent" class="sheet-content">
+          <div class="sheet-empty">Toque un polígono para ver CodLote, área, Hacienda/Productor, TCH, edad, variedad y accesos a Cronológico / Histórico.</div>
+        </div>
+      </div>
+
+      <div id="obsModal" class="obs-modal hidden" role="dialog" aria-modal="true">
+        <div class="obs-dialog">
+          <h3 id="obsCodLote">CodLote</h3>
+          <p id="obsProductor">Hacienda/Productor</p>
+          <div class="obs-grid">
+            <label>Categoría<select id="obsCategory"><option>Seguimiento</option><option>Maleza</option><option>Plaga</option><option>Sequía</option><option>Despoblación</option><option>Riego</option><option>Acceso</option><option>Cosecha</option><option>Otro</option></select></label>
+            <label>Severidad<select id="obsSeverity"><option>Baja</option><option selected>Media</option><option>Alta</option></select></label>
+            <label class="obs-full">Nota<textarea id="obsNote" placeholder="Escriba una observación corta de campo..."></textarea></label>
+            <div class="obs-full photo-capture-box"><label class="photo-label">Foto georreferenciada<input id="obsPhotoInput" type="file" accept="image/*" capture="environment" /></label><div id="obsPhotoPreview" class="photo-preview">Sin foto adjunta.</div><button id="obsPhotoClear" class="secondary" type="button">Quitar foto</button></div>
+          </div>
+          <div class="obs-actions"><button id="obsSave" class="obs-save" type="button">Guardar observación</button><button id="obsCancel" class="obs-cancel" type="button">Cancelar</button></div>
+        </div>
+      </div>
+
+      <div id="quickFichaModal" class="quick-ficha-modal hidden" role="dialog" aria-modal="true">
+        <div class="quick-ficha-dialog">
+          <button id="quickFichaClose" class="quick-ficha-close" type="button" aria-label="Cerrar ficha rápida">×</button>
+          <div id="quickFichaContent" class="quick-ficha-content">
+            <div class="quick-ficha-empty">Seleccione un polígono para abrir la ficha rápida offline.</div>
+          </div>
+        </div>
+      </div>
+      <div id="installToast" class="install-toast"><h3>Instalar CASUR Maps</h3><p>Esta versión ya está lista como PWA. Puede instalarse cuando se abre desde HTTPS o localhost.</p><div class="btnrow"><button id="installPwaToast" class="primary">Instalar</button><button id="closeToast" class="secondary">Luego</button></div></div>
+    </main>
+  </div>
+  <script>
+    // CASUR Maps V21.1 · carga robusta: evita quedarse indefinidamente en "Cargando" si un CDN tarda o falla.
+    (function(){
+      function setLoader(msg){
+        var el = document.getElementById('loaderText');
+        if(el) el.textContent = msg;
+      }
+      function loadCss(href){
+        return new Promise(function(resolve){
+          var l = document.createElement('link');
+          l.rel = 'stylesheet';
+          l.href = href;
+          l.onload = resolve;
+          l.onerror = resolve;
+          document.head.appendChild(l);
+          setTimeout(resolve, 3000);
+        });
+      }
+      function loadScript(src, timeoutMs){
+        return new Promise(function(resolve, reject){
+          var done = false;
+          var s = document.createElement('script');
+          var t = setTimeout(function(){
+            if(done) return;
+            done = true;
+            s.remove();
+            reject(new Error('Tiempo agotado cargando ' + src));
+          }, timeoutMs || 9000);
+          s.onload = function(){ if(done) return; done = true; clearTimeout(t); resolve(); };
+          s.onerror = function(){ if(done) return; done = true; clearTimeout(t); reject(new Error('No se pudo cargar ' + src)); };
+          s.src = src;
+          document.body.appendChild(s);
+        });
+      }
+      async function boot(){
+        window.__CASUR_BOOT_STARTED = Date.now();
+        setLoader('Cargando librerías de mapa...');
+        await Promise.all([
+          loadCss('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'),
+          loadCss('https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css')
+        ]);
+        try{
+          await loadScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', 9000);
+        }catch(e1){
+          console.warn('[CASUR V20.1] Falla unpkg Leaflet, intentando jsDelivr...', e1);
+          setLoader('Reintentando librería de mapa...');
+          try{
+            await loadScript('https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js', 9000);
+          }catch(e2){
+            console.error(e2);
+            setLoader('No se pudo cargar Leaflet. Revise conexión a internet o pruebe recargar.');
+            return;
+          }
+        }
+        setLoader('Cargando datos CASUR Maps...');
+        await loadScript('./app.js?v=21_3_panel_autoclose_real_overlay', 9000).catch(function(err){
+          console.error(err);
+          setLoader('No se pudo cargar app.js. Verifique que subió todos los archivos a GitHub.');
+        });
+        setTimeout(function(){
+          var loader = document.getElementById('loader');
+          if(loader && getComputedStyle(loader).display !== 'none' && !window.__CASUR_APP_SCRIPT_LOADED){
+            setLoader('La app no terminó de cargar. Limpie caché/reinstale la PWA y confirme que app.js está en la raíz.');
+          }
+        }, 12000);
+      }
+      if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, {once:true});
+      else boot();
+    })();
+  </script>
+</body>
+</html>
