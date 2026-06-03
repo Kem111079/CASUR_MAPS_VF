@@ -2190,3 +2190,137 @@ setTimeout(function(){
     $(id)?.addEventListener('change', renderHallazgoCard);
   });
 },0);
+
+
+// V21.6 · FIX Compartir hallazgo: coordenadas, generación, descarga y share robustos.
+function hallazgoGetLatLngSafe(){
+  try{
+    if(selectedLayer && selectedLayer.feature){
+      const c = featureCentroid(selectedLayer.feature);
+      if(c && Number.isFinite(Number(c[0])) && Number.isFinite(Number(c[1]))){
+        return {lat:Number(c[0]), lng:Number(c[1])};
+      }
+      const b = selectedLayer.getBounds && selectedLayer.getBounds();
+      if(b && b.getCenter){
+        const cc = b.getCenter();
+        return {lat:Number(cc.lat), lng:Number(cc.lng)};
+      }
+    }
+  }catch(err){}
+  if(lastGpsLatLng && Number.isFinite(Number(lastGpsLatLng.lat)) && Number.isFinite(Number(lastGpsLatLng.lng))){
+    return {lat:Number(lastGpsLatLng.lat), lng:Number(lastGpsLatLng.lng)};
+  }
+  return null;
+}
+hallazgoDataFromProps = function(p=selectedProps){
+  if(!p) return null;
+  const m = metricasFor(p);
+  const cod = displayCode(getCodLote(p));
+  const hac = m.hacienda_productor || 'Sin dato histórico';
+  const tab = getTablon(p) || '—';
+  const tch = Number.isFinite(Number(m.tch_ultima_zafra)) ? formatMetric(m.tch_ultima_zafra,' t/ha') : '—';
+  const edadVal = edadActualMetric(m);
+  const edad = Number.isFinite(edadVal) ? formatMetric(edadVal,' meses') : '—';
+  const variedad = m.variedad || '—';
+  const ll = hallazgoGetLatLngSafe();
+  const lat = ll ? ll.lat.toFixed(6) : '—';
+  const lng = ll ? ll.lng.toFixed(6) : '—';
+  return {cod,hac,tab,tch,edad,variedad,lat,lng,fecha:new Date().toLocaleString('es-NI')};
+};
+function canvasToBlobPromise(canvas){
+  return new Promise(resolve=>{
+    if(!canvas || !canvas.toBlob) return resolve(null);
+    canvas.toBlob(blob=>resolve(blob), 'image/png');
+  });
+}
+renderHallazgoCard = async function(){
+  const c=$('hallazgoCanvas'); if(!c) return null;
+  const ctx=c.getContext('2d'); const d=hallazgoDataFromProps(); if(!d) return null;
+  const form=readHallazgoFormPro ? readHallazgoFormPro() : {tecnico:'No especificado', categoria:'Seguimiento', severidad:'Media', comentario:(($('hallazgoComentario')?.value||'').trim()||'Sin comentario registrado.')};
+  const photo=await loadHallazgoImage();
+  const w=c.width, h=c.height;
+  ctx.clearRect(0,0,w,h);
+  const grad=ctx.createLinearGradient(0,0,w,h); grad.addColorStop(0,'#f8fafc'); grad.addColorStop(1,'#eef6f0'); ctx.fillStyle=grad; ctx.fillRect(0,0,w,h);
+  const headGrad=ctx.createLinearGradient(0,0,w,0); headGrad.addColorStop(0,'#0b7f3a'); headGrad.addColorStop(.68,'#005baa'); headGrad.addColorStop(1,'#f4c542');
+  roundedRect(ctx,50,45,w-100,180,28,headGrad,null);
+  ctx.fillStyle='#ffffff'; ctx.font='700 30px Arial'; ctx.fillText('Departamento de Negocios de Caña',90,95);
+  ctx.font='900 56px Arial'; ctx.fillText('CASUR Maps',90,155);
+  ctx.font='600 28px Arial'; ctx.fillText('Mapa inteligente de lotes cañeros',90,198);
+
+  roundedRect(ctx,50,255,w-100,h-315,28,'#ffffff','#dbe5dd'); ctx.lineWidth=2;
+  ctx.fillStyle='#0f172a'; ctx.font='900 46px Arial'; ctx.fillText('CODLOTE ' + d.cod,90,335);
+  ctx.fillStyle='#334155'; ctx.font='700 32px Arial'; ctx.fillText(d.hac,90,388);
+  ctx.font='700 28px Arial'; ctx.fillText('Tablón ' + d.tab,90,430);
+
+  const sevColor = form.severidad === 'Alta' ? '#b91c1c' : (form.severidad === 'Media' ? '#b7791f' : '#0b7f3a');
+  roundedRect(ctx,90,455,450,72,18,'#f8fafc','#e2e8f0');
+  ctx.fillStyle='#64748b'; ctx.font='800 20px Arial'; ctx.fillText('CATEGORÍA',114,482);
+  ctx.fillStyle='#0f172a'; ctx.font='900 27px Arial'; ctx.fillText(form.categoria,114,512);
+  roundedRect(ctx,570,455,260,72,18,'#f8fafc','#e2e8f0');
+  ctx.fillStyle='#64748b'; ctx.font='800 20px Arial'; ctx.fillText('SEVERIDAD',594,482);
+  ctx.fillStyle=sevColor; ctx.font='900 29px Arial'; ctx.fillText(form.severidad,594,512);
+  roundedRect(ctx,860,455,250,72,18,'#f8fafc','#e2e8f0');
+  ctx.fillStyle='#64748b'; ctx.font='800 20px Arial'; ctx.fillText('TÉCNICO',884,482);
+  ctx.fillStyle='#0f172a'; ctx.font='900 24px Arial'; wrapCanvasText(ctx,form.tecnico,884,512,210,26);
+
+  const boxes=[
+    ['TCH última zafra', d.tch, '#fff6d8'],
+    ['Edad actual', d.edad, '#e8f6ee'],
+    ['Variedad', d.variedad, '#e9f0fb'],
+    ['Coordenadas', `${d.lat}, ${d.lng}`, '#f4f7fb'],
+  ];
+  let bx=90, by=555, bw=480, bh=112;
+  boxes.forEach((b,idx)=>{
+    const col=idx%2, row=Math.floor(idx/2); const x=bx + col*(bw+40), y=by + row*(bh+24);
+    roundedRect(ctx,x,y,bw,bh,22,b[2],'#e2e8f0');
+    ctx.fillStyle='#64748b'; ctx.font='800 21px Arial'; ctx.fillText(b[0],x+24,y+34);
+    ctx.fillStyle='#0f172a'; ctx.font=(b[0]==='Coordenadas' ? '700 24px Arial' : '900 29px Arial');
+    wrapCanvasText(ctx,b[1],x+24,y+74,bw-48,29);
+  });
+
+  let hy=835, boxH=photo?240:330;
+  roundedRect(ctx,90,hy,w-180,boxH,24,'#f8fafc','#dbe5dd');
+  ctx.fillStyle='#0b7f3a'; ctx.font='900 30px Arial'; ctx.fillText('Hallazgo',120,hy+48);
+  ctx.fillStyle='#0f172a'; ctx.font='600 27px Arial';
+  wrapCanvasText(ctx,form.comentario,120,hy+98,w-240,36);
+
+  if(photo){
+    const py=hy+boxH+26;
+    ctx.fillStyle='#0b7f3a'; ctx.font='900 26px Arial'; ctx.fillText('Evidencia fotográfica',90,py);
+    drawImageCover(ctx,photo,90,py+22,w-180,170);
+  }
+
+  ctx.fillStyle='#64748b'; ctx.font='700 22px Arial'; ctx.fillText('Generado: ' + d.fecha,120,h-110);
+  ctx.fillText('Fuente: CASUR Maps · Tarjeta de hallazgo rápida para compartir',120,h-74);
+  hallazgoBlob = await canvasToBlobPromise(c);
+  return hallazgoBlob;
+};
+shareHallazgo = async function(){
+  const blob = await renderHallazgoCard();
+  const text = hallazgoText();
+  if(blob && navigator.canShare){
+    const file = new File([blob], `hallazgo_casur_${Date.now()}.png`, {type:'image/png'});
+    if(navigator.canShare({files:[file]})){
+      try{ await navigator.share({title:'CASUR Maps · Hallazgo', text:'Tarjeta de hallazgo generada desde CASUR Maps', files:[file]}); return; }catch(err){}
+    }
+  }
+  // WhatsApp web fallback: comparte texto; el usuario puede adjuntar imagen descargada si el navegador no permite compartir archivos.
+  const wa = 'https://wa.me/?text=' + encodeURIComponent(text);
+  window.open(wa,'_blank');
+};
+downloadHallazgoImage = async function(){
+  await renderHallazgoCard();
+  const c=$('hallazgoCanvas'); if(!c) return;
+  const a=document.createElement('a');
+  const d=hallazgoDataFromProps();
+  a.href=c.toDataURL('image/png'); a.download=`hallazgo_codlote_${(d&&d.cod)||'casur'}.png`; a.click();
+};
+copyHallazgoText = async function(){
+  const text=hallazgoText();
+  try{ await navigator.clipboard.writeText(text); alert('Texto del hallazgo copiado.'); }
+  catch(err){ window.prompt('Copie el siguiente texto:', text); }
+};
+window.shareHallazgo=shareHallazgo;
+window.downloadHallazgoImage=downloadHallazgoImage;
+window.copyHallazgoText=copyHallazgoText;
+window.renderHallazgoCard=renderHallazgoCard;

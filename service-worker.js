@@ -1,4 +1,4 @@
-const CACHE_NAME = 'casur-maps-pwa-v21-5-compartir-hallazgo-pro';
+const CACHE_NAME = 'casur-maps-pwa-v21-6-compartir-hallazgo-fix';
 const CORE_ASSETS = [
   './',
   './index.html',
