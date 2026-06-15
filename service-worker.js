@@ -1,4 +1,4 @@
-const CACHE_NAME = 'casur-maps-pwa-v21-7-hallazgo-foto-comentario-fix';
+const CACHE_NAME = 'casur-maps-pwa-v21-8-dual-foto-vignette-close';
 const CORE_ASSETS = [
   './',
   './index.html',

@@ -1950,11 +1950,8 @@ function hallazgoDataFromProps(p=selectedProps){
   return {cod,hac,tab,tch,edad,variedad,lat,lng,fecha:new Date().toLocaleString('es-NI')};
 }
 function openHallazgoModal(){
-  if(!selectedProps){ alert('Seleccione primero un lote.'); return; }
-  const modal=$('hallazgoModal'); if(!modal) return;
-  const ta=$('hallazgoComentario'); if(ta) ta.value='';
-  modal.classList.remove('hidden');
-  renderHallazgoCard();
+  // V21.8: delegated to openHallazgoModal = function(){...} below
+  if(window._openHallazgoModalV218) window._openHallazgoModalV218();
 }
 function closeHallazgoModal(){ const modal=$('hallazgoModal'); if(modal) modal.classList.add('hidden'); }
 function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight){
@@ -1969,58 +1966,16 @@ function roundedRect(ctx,x,y,w,h,r,fill,stroke){
   if(fill){ ctx.fillStyle=fill; ctx.fill(); }
   if(stroke){ ctx.strokeStyle=stroke; ctx.stroke(); }
 }
-function renderHallazgoCard(){
-  const c=$('hallazgoCanvas'); if(!c) return;
-  const ctx=c.getContext('2d'); const d=hallazgoDataFromProps(); if(!d) return;
-  const note=($('hallazgoComentario')?.value||'').trim() || 'Sin comentario registrado.';
-  const w=c.width, h=c.height;
-  ctx.clearRect(0,0,w,h);
-  // background
-  const grad=ctx.createLinearGradient(0,0,w,h); grad.addColorStop(0,'#f8fafc'); grad.addColorStop(1,'#eef6f0'); ctx.fillStyle=grad; ctx.fillRect(0,0,w,h);
-  // top band
-  const headGrad=ctx.createLinearGradient(0,0,w,0); headGrad.addColorStop(0,'#0b7f3a'); headGrad.addColorStop(.68,'#005baa'); headGrad.addColorStop(1,'#f4c542');
-  roundedRect(ctx,50,45,w-100,180,28,headGrad,null);
-  ctx.fillStyle='#ffffff'; ctx.font='700 30px Arial'; ctx.fillText('Departamento de Negocios de Caña',90,95);
-  ctx.font='900 56px Arial'; ctx.fillText('CASUR Maps',90,155);
-  ctx.font='600 28px Arial'; ctx.fillText('Mapa inteligente de lotes cañeros',90,198);
-  // body card
-  roundedRect(ctx,50,255,w-100,h-315,28,'#ffffff','#dbe5dd'); ctx.lineWidth=2;
-  ctx.fillStyle='#0f172a'; ctx.font='900 46px Arial'; ctx.fillText('CODLOTE ' + d.cod,90,335);
-  ctx.fillStyle='#334155'; ctx.font='700 32px Arial'; ctx.fillText(d.hac,90,388);
-  ctx.font='700 28px Arial'; ctx.fillText('Tablón ' + d.tab,90,430);
-
-  const boxes=[
-    ['TCH última zafra', d.tch, '#fff6d8'],
-    ['Edad actual', d.edad, '#e8f6ee'],
-    ['Variedad', d.variedad, '#e9f0fb'],
-    ['Coordenadas', `${d.lat}, ${d.lng}`, '#f4f7fb'],
-  ];
-  let bx=90, by=470, bw=480, bh=122;
-  boxes.forEach((b,idx)=>{
-    const col=idx%2, row=Math.floor(idx/2); const x=bx + col*(bw+40), y=by + row*(bh+28);
-    roundedRect(ctx,x,y,bw,bh,22,b[2],'#e2e8f0');
-    ctx.fillStyle='#64748b'; ctx.font='800 22px Arial'; ctx.fillText(b[0],x+24,y+36);
-    ctx.fillStyle='#0f172a'; ctx.font=(b[0]==='Coordenadas' ? '700 24px Arial' : '900 30px Arial');
-    wrapCanvasText(ctx,b[1],x+24,y+78,bw-48,30);
-  });
-
-  const hy=770;
-  roundedRect(ctx,90,hy,w-180,320,24,'#f8fafc','#dbe5dd');
-  ctx.fillStyle='#0b7f3a'; ctx.font='900 30px Arial'; ctx.fillText('Hallazgo',120,hy+48);
-  ctx.fillStyle='#0f172a'; ctx.font='600 28px Arial';
-  wrapCanvasText(ctx,note,120,hy+98,w-240,38);
-
-  ctx.fillStyle='#64748b'; ctx.font='700 22px Arial'; ctx.fillText('Generado: ' + d.fecha,120,h-110);
-  ctx.fillText('Fuente: CASUR Maps · Tarjeta de hallazgo rápida para compartir',120,h-74);
-  c.toBlob(function(blob){ hallazgoBlob = blob; }, 'image/png');
-}
-function hallazgoText(){
-  const d=hallazgoDataFromProps(); if(!d) return '';
-  const note=($('hallazgoComentario')?.value||'').trim() || 'Sin comentario registrado.';
-  return `CASUR Maps\nCODLOTE ${d.cod}\n${d.hac}\nTablón ${d.tab}\nTCH última zafra: ${d.tch}\nEdad actual: ${d.edad}\nVariedad: ${d.variedad}\nHallazgo: ${note}\nCoordenadas: ${d.lat}, ${d.lng}\nFecha: ${d.fecha}`;
+// helper: wrap text and return line count (used by vignette renderer)
+function wrapCanvasTextReturn(ctx, text, x, y, maxWidth, lineHeight){
+  const words = String(text||'').split(/\s+/); let line=''; let lines=[];
+  words.forEach(w=>{ const test = line ? line + ' ' + w : w; if(ctx.measureText(test).width > maxWidth && line){ lines.push(line); line=w; } else line=test; });
+  if(line) lines.push(line);
+  lines.forEach((ln,i)=> ctx.fillText(ln, x, y + i*lineHeight));
+  return lines.length;
 }
 async function shareHallazgo(){
-  renderHallazgoCard();
+  await renderHallazgoCard();
   const text = hallazgoText();
   if(hallazgoBlob && navigator.canShare && navigator.canShare({files:[new File([hallazgoBlob], 'hallazgo_casur.png', {type:'image/png'})]})){
     const file = new File([hallazgoBlob], `hallazgo_casur_${Date.now()}.png`, {type:'image/png'});
@@ -2029,8 +1984,8 @@ async function shareHallazgo(){
   const wa = 'https://wa.me/?text=' + encodeURIComponent(text);
   window.open(wa,'_blank');
 }
-function downloadHallazgoImage(){
-  renderHallazgoCard();
+async function downloadHallazgoImage(){
+  await renderHallazgoCard();
   const c=$('hallazgoCanvas'); if(!c) return;
   const a=document.createElement('a');
   const d=hallazgoDataFromProps();
@@ -2047,42 +2002,99 @@ window.shareHallazgo=shareHallazgo;
 window.downloadHallazgoImage=downloadHallazgoImage;
 window.copyHallazgoText=copyHallazgoText;
 
-// bind V21.4 UI after page load
+// bind V21.8 UI after page load
+function bindVignetteInput(ta){ ta.addEventListener('input', function(){ renderHallazgoCard(); }); }
 setTimeout(function(){
   $('hallazgoClose')?.addEventListener('click', closeHallazgoModal);
   $('hallazgoGenerar')?.addEventListener('click', renderHallazgoCard);
   $('hallazgoWhatsapp')?.addEventListener('click', shareHallazgo);
   $('hallazgoDescargar')?.addEventListener('click', downloadHallazgoImage);
   $('hallazgoCopiar')?.addEventListener('click', copyHallazgoText);
-  $('hallazgoComentario')?.addEventListener('input', function(){ renderHallazgoCard(); });
   $('hallazgoModal')?.addEventListener('click', function(ev){ if(ev.target===this) closeHallazgoModal(); });
+  // Vignette add button
+  $('hallazgoAddVignette')?.addEventListener('click', function(){
+    const list=$('hallazgoVignetteList'); if(!list) return;
+    const current = list.querySelectorAll('.hallazgo-vignette-item').length;
+    if(current >= 5){ this.disabled=true; return; }
+    const n=current+1;
+    const div=document.createElement('div'); div.className='hallazgo-vignette-item';
+    div.innerHTML=`<span class="hallazgo-vignette-num">${n}</span><textarea class="hallazgo-vignette-ta" data-vignette="${n-1}" placeholder="Comentario ${n}..." rows="2"></textarea>`;
+    list.appendChild(div);
+    bindVignetteInput(div.querySelector('.hallazgo-vignette-ta'));
+    div.querySelector('.hallazgo-vignette-ta').focus();
+    if(list.querySelectorAll('.hallazgo-vignette-item').length >= 5) this.disabled=true;
+  });
+  // Initial vignette inputs
+  document.querySelectorAll('.hallazgo-vignette-ta').forEach(bindVignetteInput);
+  // Photo 1
+  $('hallazgoFotoInput')?.addEventListener('change', function(){
+    const f=this.files && this.files[0];
+    if(!f){ setHallazgoPreviewPhoto('',1); renderHallazgoCard(); return; }
+    const reader=new FileReader();
+    reader.onload=e=>{ setHallazgoPreviewPhoto(e.target.result,1); renderHallazgoCard(); };
+    reader.readAsDataURL(f);
+  });
+  $('hallazgoFotoClear')?.addEventListener('click', function(){
+    const f=$('hallazgoFotoInput'); if(f) f.value='';
+    setHallazgoPreviewPhoto('',1); renderHallazgoCard();
+  });
+  // Photo 2
+  $('hallazgoFotoInput2')?.addEventListener('change', function(){
+    const f=this.files && this.files[0];
+    if(!f){ setHallazgoPreviewPhoto('',2); renderHallazgoCard(); return; }
+    const reader=new FileReader();
+    reader.onload=e=>{ setHallazgoPreviewPhoto(e.target.result,2); renderHallazgoCard(); };
+    reader.readAsDataURL(f);
+  });
+  $('hallazgoFotoClear2')?.addEventListener('click', function(){
+    const f=$('hallazgoFotoInput2'); if(f) f.value='';
+    setHallazgoPreviewPhoto('',2); renderHallazgoCard();
+  });
+  ['hallazgoTecnico','hallazgoCategoria','hallazgoSeveridad'].forEach(id=>{
+    $(id)?.addEventListener('input', renderHallazgoCard);
+    $(id)?.addEventListener('change', renderHallazgoCard);
+  });
 },0);
 
 
 // V21.5 · Compartir hallazgo PRO: categoría, severidad, técnico y foto opcional.
 let hallazgoFotoDataUrl = '';
+let hallazgoFotoDataUrl2 = '';
+function readHallazgoVignettes(){
+  const items = document.querySelectorAll('.hallazgo-vignette-ta');
+  const comments = [];
+  items.forEach(ta=>{ const v=(ta.value||'').trim(); if(v) comments.push(v); });
+  return comments.length ? comments : ['Sin comentario registrado.'];
+}
 function readHallazgoFormPro(){
   return {
     tecnico: ($('hallazgoTecnico')?.value || '').trim() || 'No especificado',
     categoria: ($('hallazgoCategoria')?.value || 'Seguimiento').trim(),
     severidad: ($('hallazgoSeveridad')?.value || 'Media').trim(),
-    comentario: ($('hallazgoComentario')?.value || '').trim() || 'Sin comentario registrado.'
+    comentario: readHallazgoVignettes().join(' | '),
+    comentarios: readHallazgoVignettes()
   };
 }
-function setHallazgoPreviewPhoto(dataUrl){
-  hallazgoFotoDataUrl = dataUrl || '';
-  const pv = $('hallazgoFotoPreview');
+function setHallazgoPreviewPhoto(dataUrl, idx){
+  idx = idx || 1;
+  if(idx === 1){ hallazgoFotoDataUrl = dataUrl || ''; }
+  else { hallazgoFotoDataUrl2 = dataUrl || ''; }
+  const pvId = idx === 1 ? 'hallazgoFotoPreview' : 'hallazgoFotoPreview2';
+  const pv = $(pvId);
   if(!pv) return;
-  if(hallazgoFotoDataUrl) pv.innerHTML = `<img src="${hallazgoFotoDataUrl}" alt="Foto del hallazgo">`;
+  const url = idx === 1 ? hallazgoFotoDataUrl : hallazgoFotoDataUrl2;
+  if(url) pv.innerHTML = `<img src="${url}" alt="Foto del hallazgo ${idx}">`;
   else pv.textContent = 'Sin foto adjunta.';
 }
-function loadHallazgoImage(){
+function loadHallazgoImage(idx){
+  idx = idx || 1;
+  const url = idx === 1 ? hallazgoFotoDataUrl : hallazgoFotoDataUrl2;
   return new Promise(resolve=>{
-    if(!hallazgoFotoDataUrl) return resolve(null);
+    if(!url) return resolve(null);
     const img = new Image();
     img.onload = ()=>resolve(img);
     img.onerror = ()=>resolve(null);
-    img.src = hallazgoFotoDataUrl;
+    img.src = url;
   });
 }
 function drawImageCover(ctx,img,x,y,w,h){
@@ -2099,10 +2111,19 @@ function drawImageCover(ctx,img,x,y,w,h){
 openHallazgoModal = function(){
   if(!selectedProps){ alert('Seleccione primero un lote.'); return; }
   const modal=$('hallazgoModal'); if(!modal) return;
-  ['hallazgoComentario','hallazgoTecnico'].forEach(id=>{ const el=$(id); if(el) el.value=''; });
+  window._openHallazgoModalV218 = openHallazgoModal;
+  ['hallazgoTecnico'].forEach(id=>{ const el=$(id); if(el) el.value=''; });
   if($('hallazgoCategoria')) $('hallazgoCategoria').value='Seguimiento';
   if($('hallazgoSeveridad')) $('hallazgoSeveridad').value='Media';
-  setHallazgoPreviewPhoto('');
+  // Reset vignettes to 1 empty comment
+  const list=$('hallazgoVignetteList');
+  if(list){
+    list.innerHTML='<div class="hallazgo-vignette-item"><span class="hallazgo-vignette-num">1</span><textarea class="hallazgo-vignette-ta" data-vignette="0" placeholder="Ej. Se observa baja cobertura en el borde norte del lote." rows="2"></textarea></div>';
+    list.querySelectorAll('.hallazgo-vignette-ta').forEach(ta=>ta.addEventListener('input',function(){renderHallazgoCard();}));
+  }
+  const addBtn=$('hallazgoAddVignette'); if(addBtn) addBtn.disabled=false;
+  setHallazgoPreviewPhoto('',1);
+  setHallazgoPreviewPhoto('',2);
   modal.classList.remove('hidden');
   renderHallazgoCard();
 };
@@ -2110,7 +2131,10 @@ renderHallazgoCard = async function(){
   const c=$('hallazgoCanvas'); if(!c) return;
   const ctx=c.getContext('2d'); const d=hallazgoDataFromProps(); if(!d) return;
   const form=readHallazgoFormPro();
-  const photo=await loadHallazgoImage();
+  const photo=await loadHallazgoImage(1);
+  const photo2=await loadHallazgoImage(2);
+  const hasPhotos = photo || photo2;
+  const photoCount = (photo?1:0)+(photo2?1:0);
   const w=c.width, h=c.height;
   ctx.clearRect(0,0,w,h);
   const grad=ctx.createLinearGradient(0,0,w,h); grad.addColorStop(0,'#f8fafc'); grad.addColorStop(1,'#eef6f0'); ctx.fillStyle=grad; ctx.fillRect(0,0,w,h);
@@ -2151,16 +2175,39 @@ renderHallazgoCard = async function(){
     wrapCanvasText(ctx,b[1],x+24,y+74,bw-48,29);
   });
 
-  let hy=835, boxH=photo?240:330;
-  roundedRect(ctx,90,hy,w-180,boxH,24,'#f8fafc','#dbe5dd');
-  ctx.fillStyle='#0b7f3a'; ctx.font='900 30px Arial'; ctx.fillText('Hallazgo',120,hy+48);
-  ctx.fillStyle='#0f172a'; ctx.font='600 27px Arial';
-  wrapCanvasText(ctx,form.comentario,120,hy+98,w-240,36);
+  // Vignette comments section
+  const comments = form.comentarios || [form.comentario];
+  const commentLineH = 36;
+  const commentBoxH = Math.max(180, 60 + comments.length * (commentLineH + 18));
+  let hy = 835;
+  roundedRect(ctx,90,hy,w-180,commentBoxH,24,'#f8fafc','#dbe5dd');
+  ctx.fillStyle='#0b7f3a'; ctx.font='900 30px Arial'; ctx.fillText('Hallazgo / Comentarios',120,hy+46);
+  let cy = hy + 86;
+  comments.forEach((cmt, ci) => {
+    // Number bubble
+    ctx.beginPath(); ctx.arc(134, cy-6, 16, 0, Math.PI*2); ctx.fillStyle='#0b7f3a'; ctx.fill();
+    ctx.fillStyle='#fff'; ctx.font='900 18px Arial'; ctx.textAlign='center';
+    ctx.fillText(String(ci+1), 134, cy+0); ctx.textAlign='left';
+    ctx.fillStyle='#0f172a'; ctx.font='600 26px Arial';
+    const lines = wrapCanvasTextReturn(ctx, cmt, 162, cy, w-280, commentLineH);
+    cy += (lines * commentLineH) + 18;
+  });
 
-  if(photo){
-    const py=hy+boxH+26;
-    ctx.fillStyle='#0b7f3a'; ctx.font='900 26px Arial'; ctx.fillText('Evidencia fotográfica',90,py);
-    drawImageCover(ctx,photo,90,py+22,w-180,170);
+  // Photos section (up to 2, auto-adjusted side by side or full width)
+  if(hasPhotos){
+    const py = hy + commentBoxH + 26;
+    ctx.fillStyle='#0b7f3a'; ctx.font='900 26px Arial';
+    ctx.fillText('Evidencia fotográfica' + (photoCount===2?' · 2 imágenes':''), 90, py);
+    const photoAreaH = 200;
+    if(photoCount === 2 && photo && photo2){
+      const pw = (w-180-20)/2;
+      drawImageCover(ctx, photo, 90, py+28, pw, photoAreaH);
+      drawImageCover(ctx, photo2, 90+pw+20, py+28, pw, photoAreaH);
+    } else if(photo){
+      drawImageCover(ctx, photo, 90, py+28, w-180, photoAreaH);
+    } else if(photo2){
+      drawImageCover(ctx, photo2, 90, py+28, w-180, photoAreaH);
+    }
   }
 
   ctx.fillStyle='#64748b'; ctx.font='700 22px Arial'; ctx.fillText('Generado: ' + d.fecha,120,h-110);
@@ -2170,7 +2217,9 @@ renderHallazgoCard = async function(){
 hallazgoText = function(){
   const d=hallazgoDataFromProps(); if(!d) return '';
   const form=readHallazgoFormPro();
-  return `CASUR Maps\nCODLOTE ${d.cod}\n${d.hac}\nTablón ${d.tab}\nCategoría: ${form.categoria}\nSeveridad: ${form.severidad}\nTécnico: ${form.tecnico}\nTCH última zafra: ${d.tch}\nEdad actual: ${d.edad}\nVariedad: ${d.variedad}\nHallazgo: ${form.comentario}\nCoordenadas: ${d.lat}, ${d.lng}\nFecha: ${d.fecha}`;
+  const cmts = form.comentarios || [form.comentario];
+  const cmtText = cmts.map((c,i)=>`Comentario ${i+1}: ${c}`).join('\n');
+  return `CASUR Maps\nCODLOTE ${d.cod}\n${d.hac}\nTablón ${d.tab}\nCategoría: ${form.categoria}\nSeveridad: ${form.severidad}\nTécnico: ${form.tecnico}\nTCH última zafra: ${d.tch}\nEdad actual: ${d.edad}\nVariedad: ${d.variedad}\n${cmtText}\nCoordenadas: ${d.lat}, ${d.lng}\nFecha: ${d.fecha}`;
 };
 setTimeout(function(){
   const file=$('hallazgoFotoInput');
@@ -2233,100 +2282,14 @@ function canvasToBlobPromise(canvas){
     canvas.toBlob(blob=>resolve(blob), 'image/png');
   });
 }
-renderHallazgoCard = async function(){
-  const c=$('hallazgoCanvas'); if(!c) return null;
-  const ctx=c.getContext('2d'); const d=hallazgoDataFromProps(); if(!d) return null;
-  const form=readHallazgoFormPro ? readHallazgoFormPro() : {tecnico:'No especificado', categoria:'Seguimiento', severidad:'Media', comentario:(($('hallazgoComentario')?.value||'').trim()||'Sin comentario registrado.')};
-  const photo=await loadHallazgoImage();
-  const w=c.width, h=c.height;
-  ctx.clearRect(0,0,w,h);
-  const grad=ctx.createLinearGradient(0,0,w,h); grad.addColorStop(0,'#f8fafc'); grad.addColorStop(1,'#eef6f0'); ctx.fillStyle=grad; ctx.fillRect(0,0,w,h);
-  const headGrad=ctx.createLinearGradient(0,0,w,0); headGrad.addColorStop(0,'#0b7f3a'); headGrad.addColorStop(.68,'#005baa'); headGrad.addColorStop(1,'#f4c542');
-  roundedRect(ctx,50,45,w-100,180,28,headGrad,null);
-  ctx.fillStyle='#ffffff'; ctx.font='700 30px Arial'; ctx.fillText('Departamento de Negocios de Caña',90,95);
-  ctx.font='900 56px Arial'; ctx.fillText('CASUR Maps',90,155);
-  ctx.font='600 28px Arial'; ctx.fillText('Mapa inteligente de lotes cañeros',90,198);
-
-  roundedRect(ctx,50,255,w-100,h-315,28,'#ffffff','#dbe5dd'); ctx.lineWidth=2;
-  ctx.fillStyle='#0f172a'; ctx.font='900 46px Arial'; ctx.fillText('CODLOTE ' + d.cod,90,335);
-  ctx.fillStyle='#334155'; ctx.font='700 32px Arial'; ctx.fillText(d.hac,90,388);
-  ctx.font='700 28px Arial'; ctx.fillText('Tablón ' + d.tab,90,430);
-
-  const sevColor = form.severidad === 'Alta' ? '#b91c1c' : (form.severidad === 'Media' ? '#b7791f' : '#0b7f3a');
-  roundedRect(ctx,90,455,450,72,18,'#f8fafc','#e2e8f0');
-  ctx.fillStyle='#64748b'; ctx.font='800 20px Arial'; ctx.fillText('CATEGORÍA',114,482);
-  ctx.fillStyle='#0f172a'; ctx.font='900 27px Arial'; ctx.fillText(form.categoria,114,512);
-  roundedRect(ctx,570,455,260,72,18,'#f8fafc','#e2e8f0');
-  ctx.fillStyle='#64748b'; ctx.font='800 20px Arial'; ctx.fillText('SEVERIDAD',594,482);
-  ctx.fillStyle=sevColor; ctx.font='900 29px Arial'; ctx.fillText(form.severidad,594,512);
-  roundedRect(ctx,860,455,250,72,18,'#f8fafc','#e2e8f0');
-  ctx.fillStyle='#64748b'; ctx.font='800 20px Arial'; ctx.fillText('TÉCNICO',884,482);
-  ctx.fillStyle='#0f172a'; ctx.font='900 24px Arial'; wrapCanvasText(ctx,form.tecnico,884,512,210,26);
-
-  const boxes=[
-    ['TCH última zafra', d.tch, '#fff6d8'],
-    ['Edad actual', d.edad, '#e8f6ee'],
-    ['Variedad', d.variedad, '#e9f0fb'],
-    ['Coordenadas', `${d.lat}, ${d.lng}`, '#f4f7fb'],
-  ];
-  let bx=90, by=555, bw=480, bh=112;
-  boxes.forEach((b,idx)=>{
-    const col=idx%2, row=Math.floor(idx/2); const x=bx + col*(bw+40), y=by + row*(bh+24);
-    roundedRect(ctx,x,y,bw,bh,22,b[2],'#e2e8f0');
-    ctx.fillStyle='#64748b'; ctx.font='800 21px Arial'; ctx.fillText(b[0],x+24,y+34);
-    ctx.fillStyle='#0f172a'; ctx.font=(b[0]==='Coordenadas' ? '700 24px Arial' : '900 29px Arial');
-    wrapCanvasText(ctx,b[1],x+24,y+74,bw-48,29);
+// V21.5/V21.6/V21.7 renderHallazgoCard removed - superseded by V21.8 above
+// canvasToBlobPromise kept for compatibility
+function canvasToBlobPromise(canvas){
+  return new Promise(resolve=>{
+    if(!canvas || !canvas.toBlob) return resolve(null);
+    canvas.toBlob(blob=>resolve(blob), 'image/png');
   });
-
-  let hy=835, boxH=photo?240:330;
-  roundedRect(ctx,90,hy,w-180,boxH,24,'#f8fafc','#dbe5dd');
-  ctx.fillStyle='#0b7f3a'; ctx.font='900 30px Arial'; ctx.fillText('Hallazgo',120,hy+48);
-  ctx.fillStyle='#0f172a'; ctx.font='600 27px Arial';
-  wrapCanvasText(ctx,form.comentario,120,hy+98,w-240,36);
-
-  if(photo){
-    const py=hy+boxH+26;
-    ctx.fillStyle='#0b7f3a'; ctx.font='900 26px Arial'; ctx.fillText('Evidencia fotográfica',90,py);
-    drawImageCover(ctx,photo,90,py+22,w-180,170);
-  }
-
-  ctx.fillStyle='#64748b'; ctx.font='700 22px Arial'; ctx.fillText('Generado: ' + d.fecha,120,h-110);
-  ctx.fillText('Fuente: CASUR Maps · Tarjeta de hallazgo rápida para compartir',120,h-74);
-  hallazgoBlob = await canvasToBlobPromise(c);
-  return hallazgoBlob;
-};
-shareHallazgo = async function(){
-  const blob = await renderHallazgoCard();
-  const text = hallazgoText();
-  if(blob && navigator.canShare){
-    const file = new File([blob], `hallazgo_casur_${Date.now()}.png`, {type:'image/png'});
-    if(navigator.canShare({files:[file]})){
-      try{ await navigator.share({title:'CASUR Maps · Hallazgo', text:'Tarjeta de hallazgo generada desde CASUR Maps', files:[file]}); return; }catch(err){}
-    }
-  }
-  // WhatsApp web fallback: comparte texto; el usuario puede adjuntar imagen descargada si el navegador no permite compartir archivos.
-  const wa = 'https://wa.me/?text=' + encodeURIComponent(text);
-  window.open(wa,'_blank');
-};
-downloadHallazgoImage = async function(){
-  await renderHallazgoCard();
-  const c=$('hallazgoCanvas'); if(!c) return;
-  const a=document.createElement('a');
-  const d=hallazgoDataFromProps();
-  a.href=c.toDataURL('image/png'); a.download=`hallazgo_codlote_${(d&&d.cod)||'casur'}.png`; a.click();
-};
-copyHallazgoText = async function(){
-  const text=hallazgoText();
-  try{ await navigator.clipboard.writeText(text); alert('Texto del hallazgo copiado.'); }
-  catch(err){ window.prompt('Copie el siguiente texto:', text); }
-};
-window.shareHallazgo=shareHallazgo;
-window.downloadHallazgoImage=downloadHallazgoImage;
-window.copyHallazgoText=copyHallazgoText;
-window.renderHallazgoCard=renderHallazgoCard;
-
-
-// V21.7 · Tarjeta de hallazgo: métricas compactas, comentario/foto ampliados y foto sin recorte.
+}
 function drawImageContain(ctx,img,x,y,w,h){
   if(!img) return;
   roundedRect(ctx,x,y,w,h,22,'#f8fafc','#dbe5dd');
@@ -2343,103 +2306,5 @@ function drawImageContain(ctx,img,x,y,w,h){
   ctx.drawImage(img, dx, dy, dw, dh);
   ctx.restore();
 }
-renderHallazgoCard = async function(){
-  const c=$('hallazgoCanvas'); if(!c) return null;
-  const ctx=c.getContext('2d'); const d=hallazgoDataFromProps(); if(!d) return null;
-  const form=readHallazgoFormPro ? readHallazgoFormPro() : {tecnico:'No especificado', categoria:'Seguimiento', severidad:'Media', comentario:(($('hallazgoComentario')?.value||'').trim()||'Sin comentario registrado.')};
-  const photo=await loadHallazgoImage();
-  const w=c.width, h=c.height;
-  ctx.clearRect(0,0,w,h);
 
-  const bg=ctx.createLinearGradient(0,0,w,h);
-  bg.addColorStop(0,'#f8fafc');
-  bg.addColorStop(1,'#eef6f0');
-  ctx.fillStyle=bg;
-  ctx.fillRect(0,0,w,h);
-
-  const headGrad=ctx.createLinearGradient(0,0,w,0);
-  headGrad.addColorStop(0,'#0b7f3a');
-  headGrad.addColorStop(.68,'#005baa');
-  headGrad.addColorStop(1,'#f4c542');
-  roundedRect(ctx,50,42,w-100,155,26,headGrad,null);
-  ctx.fillStyle='#ffffff';
-  ctx.font='700 28px Arial';
-  ctx.fillText('Departamento de Negocios de Caña',90,86);
-  ctx.font='900 50px Arial';
-  ctx.fillText('CASUR Maps',90,142);
-  ctx.font='600 24px Arial';
-  ctx.fillText('Mapa inteligente de lotes cañeros',90,180);
-
-  roundedRect(ctx,50,220,w-100,h-275,28,'#ffffff','#dbe5dd');
-
-  ctx.fillStyle='#0f172a';
-  ctx.font='900 42px Arial';
-  ctx.fillText('CODLOTE ' + d.cod,88,295);
-  ctx.fillStyle='#334155';
-  ctx.font='700 29px Arial';
-  wrapCanvasText(ctx,d.hac,88,338,650,34);
-  ctx.font='700 25px Arial';
-  ctx.fillText('Tablón ' + d.tab,88,408);
-
-  const sevColor = form.severidad === 'Alta' ? '#b91c1c' : (form.severidad === 'Media' ? '#b7791f' : '#0b7f3a');
-  // Chips compactos a la derecha del encabezado
-  roundedRect(ctx,790,268,145,56,16,'#f8fafc','#e2e8f0');
-  ctx.fillStyle='#64748b'; ctx.font='800 15px Arial'; ctx.fillText('CATEGORÍA',806,290);
-  ctx.fillStyle='#0f172a'; ctx.font='900 20px Arial'; wrapCanvasText(ctx,form.categoria,806,315,110,21);
-
-  roundedRect(ctx,950,268,150,56,16,'#f8fafc','#e2e8f0');
-  ctx.fillStyle='#64748b'; ctx.font='800 15px Arial'; ctx.fillText('SEVERIDAD',966,290);
-  ctx.fillStyle=sevColor; ctx.font='900 21px Arial'; ctx.fillText(form.severidad,966,317);
-
-  roundedRect(ctx,790,340,310,70,16,'#f8fafc','#e2e8f0');
-  ctx.fillStyle='#64748b'; ctx.font='800 15px Arial'; ctx.fillText('TÉCNICO',806,363);
-  ctx.fillStyle='#0f172a'; ctx.font='900 20px Arial'; wrapCanvasText(ctx,form.tecnico,806,389,270,22);
-
-  // Métricas compactas en una sola fila para liberar espacio.
-  const metrics=[
-    ['TCH', d.tch, '#fff6d8'],
-    ['Edad', d.edad, '#e8f6ee'],
-    ['Variedad', d.variedad, '#e9f0fb'],
-    ['GPS', `${d.lat}, ${d.lng}`, '#f4f7fb'],
-  ];
-  let mx=88, my=445, mw=240, mh=82, gap=16;
-  metrics.forEach((b,idx)=>{
-    const x=mx + idx*(mw+gap);
-    roundedRect(ctx,x,my,mw,mh,18,b[2],'#e2e8f0');
-    ctx.fillStyle='#64748b';
-    ctx.font='800 17px Arial';
-    ctx.fillText(b[0],x+16,my+27);
-    ctx.fillStyle='#0f172a';
-    ctx.font=(b[0]==='GPS' ? '700 17px Arial' : '900 21px Arial');
-    wrapCanvasText(ctx,b[1],x+16,my+57,mw-32,22);
-  });
-
-  // Comentario más amplio.
-  const hy=555;
-  const commentH = photo ? 255 : 560;
-  roundedRect(ctx,88,hy,w-176,commentH,24,'#f8fafc','#dbe5dd');
-  ctx.fillStyle='#0b7f3a';
-  ctx.font='900 31px Arial';
-  ctx.fillText('Hallazgo / comentario de campo',120,hy+48);
-  ctx.fillStyle='#0f172a';
-  ctx.font='600 29px Arial';
-  wrapCanvasText(ctx,form.comentario,120,hy+98,w-240,39);
-
-  if(photo){
-    const py=hy+commentH+30;
-    ctx.fillStyle='#0b7f3a';
-    ctx.font='900 28px Arial';
-    ctx.fillText('Evidencia fotográfica',88,py);
-    // Foto más grande y en modo contain, sin recorte.
-    drawImageContain(ctx,photo,88,py+24,w-176,345);
-  }
-
-  ctx.fillStyle='#64748b';
-  ctx.font='700 21px Arial';
-  ctx.fillText('Generado: ' + d.fecha,120,h-104);
-  ctx.fillText('Fuente: CASUR Maps · Tarjeta de hallazgo rápida para compartir',120,h-70);
-
-  hallazgoBlob = await canvasToBlobPromise(c);
-  return hallazgoBlob;
-};
 window.renderHallazgoCard=renderHallazgoCard;
