@@ -768,7 +768,6 @@ function cleanSelectedHtml(p, compact=false){
       <a class="go-hist" href="${escapeHtml(hist)}">▥ Histórico</a>
       <button class="go-zoom" onclick="zoomSelected()" type="button">⌕ Acercar</button>
       <button class="share-hallazgo-btn" onclick="openHallazgoModal()" type="button">🟢 Compartir hallazgo</button>
-      <button class="go-close-panel" onclick="window.closeCardOrPanel()" type="button">✕ Cerrar</button>
     </div>`;
 }
 function updateSelectionSheet(p){

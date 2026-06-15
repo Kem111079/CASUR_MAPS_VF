@@ -562,3 +562,34 @@ body.map-visual-highcontrast .measure-alt-values{color:rgba(255,255,255,.8)}
 /* V22 · Vignette delete button */
 .hallazgo-vignette-del{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#fee2e2;color:#b91c1c;border:1px solid #fecaca;font-weight:900;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:6px;padding:0;line-height:1}
 .hallazgo-vignette-del:hover{background:#fecaca}
+
+/* V22.3 · panelCloseBtn restaurado al fondo inferior derecho del sidebar */
+.panel-close-bottom{
+  position:sticky;
+  bottom:0;
+  z-index:6;
+  display:none;
+  justify-content:flex-end;
+  padding:10px 14px 14px;
+  background:linear-gradient(to bottom,transparent,rgba(255,255,255,.98) 30%);
+  pointer-events:none;
+}
+.panel-close-btn-bottom{
+  pointer-events:all;
+  border:0;
+  border-radius:14px;
+  padding:12px 20px;
+  background:#002f5f;
+  color:#fff;
+  font-weight:900;
+  font-size:15px;
+  cursor:pointer;
+  box-shadow:0 4px 16px rgba(0,47,95,.22);
+  min-width:110px;
+}
+.panel-close-btn-bottom:active{ opacity:.85; }
+@media(max-width:860px){
+  .panel-close-bottom{ display:flex; }
+}
+/* hide the OLD sticky-top panel-close completely */
+.panel-close{ display:none!important; }
