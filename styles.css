@@ -545,17 +545,18 @@ body.map-visual-highcontrast .measure-alt-values{color:rgba(255,255,255,.8)}
 
 /* V22 · Panel close moved to bottom-left of card actions */
 .panel-close{display:none!important}
-.go-close-panel{background:#f1f5f9!important;color:#334155!important;border:1px solid #cbd5e1!important;font-weight:900!important}
+/* V22 · close button at bottom RIGHT of field-actions */
+.go-close-panel{background:#f1f5f9!important;color:#334155!important;border:1px solid #cbd5e1!important;font-weight:900!important;border-radius:14px!important;padding:10px 9px!important;font-size:12px!important;font-weight:900!important;cursor:pointer!important;min-height:42px!important;display:flex!important;align-items:center!important;justify-content:center!important;}
 .go-close-panel:hover{background:#e2e8f0!important}
+.share-hallazgo-btn{border-radius:14px!important}
+/* Bottom row: [Compartir hallazgo (left)] [✕ Cerrar (right)] */
 .field-actions{grid-template-columns:1fr 1fr 92px!important}
-.field-actions .go-close-panel{order:4}
-.field-actions .share-hallazgo-btn{order:5}
-/* Last two buttons (close + compartir) span into their own row */
-.field-actions .go-close-panel,.field-actions .share-hallazgo-btn{grid-column:auto}
+.field-actions .share-hallazgo-btn{grid-column:1}
+.field-actions .go-close-panel{grid-column:2}
 @media(max-width:860px){
   .field-actions{grid-template-columns:1fr 1fr!important}
-  .field-actions .go-close-panel{grid-column:1}
-  .field-actions .share-hallazgo-btn{grid-column:2}
+  .field-actions .share-hallazgo-btn{grid-column:1!important}
+  .field-actions .go-close-panel{grid-column:2!important}
 }
 
 /* V22 · Vignette delete button */

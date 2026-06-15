@@ -298,7 +298,7 @@ function refreshMapSize(){
     setTimeout(()=>map.invalidateSize({animate:false}), 280);
   }
 }
-function closePanel(refresh=false){
+window.closePanel = function closePanel(refresh=false){
   document.body.classList.remove('sidebar-open');
   document.body.classList.remove('sidebar-autoclose-ready');
   const bd=$('sidebarBackdrop'); if(bd) bd.setAttribute('aria-hidden','true');
@@ -426,7 +426,7 @@ function handlePanelOutsidePointer(e){
   // Si el toque ocurre dentro del panel, no cerrar.
   if(t.closest?.('#sidebar')) return;
   // Botones que abren o controlan panel no deben provocar cierre inmediato accidental.
-  if(t.closest?.('#mobileToggle,#btnPanelFloating,#panelCloseBtn,.mobile-actions,.topbar')) return;
+  if(t.closest?.('#mobileToggle,#btnPanelFloating,#panelCloseBtn,.go-close-panel,.mobile-actions,.topbar')) return;
   // Controles flotantes y modales no se cierran por autoclose.
   if(t.closest?.('.leaflet-control,.selection-sheet,.gps-status-bar,.measure-floating-toolbar,.install-toast,.obs-modal,.quick-ficha-modal')) return;
   closePanel(true);
@@ -767,8 +767,8 @@ function cleanSelectedHtml(p, compact=false){
       <a class="go-crono" href="${escapeHtml(crono)}">▣ Cronológico</a>
       <a class="go-hist" href="${escapeHtml(hist)}">▥ Histórico</a>
       <button class="go-zoom" onclick="zoomSelected()" type="button">⌕ Acercar</button>
-      <button class="go-close-panel" onclick="closePanel(true)" type="button">✕ Cerrar</button>
       <button class="share-hallazgo-btn" onclick="openHallazgoModal()" type="button">🟢 Compartir hallazgo</button>
+      <button class="go-close-panel" onclick="window.closePanel(true)" type="button">✕ Cerrar</button>
     </div>`;
 }
 function updateSelectionSheet(p){
