@@ -768,7 +768,6 @@ function cleanSelectedHtml(p, compact=false){
       <a class="go-hist" href="${escapeHtml(hist)}">▥ Histórico</a>
       <button class="go-zoom" onclick="zoomSelected()" type="button">⌕ Acercar</button>
       <button class="share-hallazgo-btn" onclick="openHallazgoModal()" type="button">🟢 Compartir hallazgo</button>
-      <button class="go-close-panel" onclick="document.body.classList.remove('sidebar-open','sidebar-autoclose-ready');var _s=document.getElementById('selectionSheet');if(_s)_s.classList.add('collapsed');var _b=document.getElementById('sidebarBackdrop');if(_b)_b.setAttribute('aria-hidden','true');" type="button">✕ Cerrar</button>
     </div>`;
 }
 function updateSelectionSheet(p){
