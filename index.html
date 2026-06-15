@@ -13,7 +13,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16.png" />
-  <link rel="stylesheet" href="./styles.css?v=vf_22_3" />
+  <link rel="stylesheet" href="./styles.css?v=vf_22_4" />
 </head>
 <body>
   <div id="loader" class="loader"><div class="loader-card"><h2>CASUR Maps</h2><p id="loaderText">Cargando CASUR Maps...</p><div class="progress"><span></span></div></div></div>
@@ -217,7 +217,6 @@
         <h2>Lote seleccionado</h2>
         <div id="selectedInfo" class="selected-card">Seleccione un polígono para abrir Cronológico o Histórico.</div>
       </section>
-      <div class="panel-close-bottom"><button id="panelCloseBtn" class="panel-close-btn-bottom" type="button" aria-label="Cerrar panel">✕ Cerrar</button></div>
     </aside>
     <div id="sidebarBackdrop" class="sidebar-backdrop" aria-hidden="true"></div>
     <main class="mapwrap">
@@ -415,7 +414,7 @@
           }
         }
         setLoader('Cargando datos CASUR Maps...');
-        await loadScript('./app.js?v=vf_22_3', 9000).catch(function(err){
+        await loadScript('./app.js?v=vf_22_4', 9000).catch(function(err){
           console.error(err);
           setLoader('No se pudo cargar app.js. Verifique que subió todos los archivos a GitHub.');
         });

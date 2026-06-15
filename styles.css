@@ -593,3 +593,23 @@ body.map-visual-highcontrast .measure-alt-values{color:rgba(255,255,255,.8)}
 }
 /* hide the OLD sticky-top panel-close completely */
 .panel-close{ display:none!important; }
+
+/* V22.4 · Botón cerrar en field-actions - derecha de Compartir hallazgo */
+.go-close-panel{
+  background:#f1f5f9 !important;
+  color:#334155 !important;
+  border:1px solid #cbd5e1 !important;
+  border-radius:14px !important;
+  padding:10px 9px !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+  cursor:pointer !important;
+  min-height:42px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+.go-close-panel:active{ opacity:.8 !important; }
+/* fila inferior: [Compartir hallazgo col-1] [✕ Cerrar col-2] */
+.field-actions .share-hallazgo-btn{ grid-column:1 !important; }
+.field-actions .go-close-panel{ grid-column:2 !important; }
