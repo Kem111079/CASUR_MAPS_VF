@@ -45,7 +45,7 @@ body{font-family:'Plus Jakarta Sans','Segoe UI',Roboto,Arial,sans-serif;backgrou
 .ficha-card{overflow:hidden;padding:0!important}.ficha-card #printPanel{padding:15px}.ficha-band{margin:-15px -15px 14px;border-radius:22px 22px 18px 18px;padding:18px;background:radial-gradient(circle at top right,rgba(244,197,66,.28),transparent 35%),linear-gradient(135deg,#082617,#0b6031 58%,#073d73);color:#fff;display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.ficha-band h2{margin:0;font-size:24px;line-height:1.05;color:#fff}.ficha-band small{display:block;margin-top:5px;color:rgba(255,255,255,.80);font-weight:800;line-height:1.35}.ficha-band .status-pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.22);color:#fff}.ficha-actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px}.ficha-print-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.26);background:#fff;color:#0b6031;border-radius:15px;padding:10px 12px;font-weight:950}.ficha-print-btn small{display:block;color:#64748b;margin:0;font-size:9.5px}.section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--line) 18%,var(--line) 82%,transparent);margin:10px 0}.delta strong::before{font-size:12px;margin-right:3px}.delta strong.pos::before{content:'▲'}.delta strong.neg::before{content:'▼'}.delta strong.neu::before{content:'•'}.hfill.good{background:linear-gradient(90deg,#0b7f3a,#33a852)}.hfill.warn{background:linear-gradient(90deg,#f4c542,#b7791f)}.hfill.bad{background:linear-gradient(90deg,#ef7777,#b91c1c)}.tch-good td{background:#f0fbf5}.tch-warn td{background:#fff9e8}.tch-low td{background:#fff1f1}.tch-val.good{color:#0b7f3a;font-weight:950}.tch-val.warn{color:#b7791f;font-weight:950}.tch-val.bad{color:#b91c1c;font-weight:950}.detail-status{border-radius:999px;padding:4px 7px;font-size:10px;font-weight:950;display:inline-flex}.detail-status.good{background:#e9f9ef;color:#09612e}.detail-status.warn{background:#fff7df;color:#8a5a00}.detail-status.bad{background:#ffeded;color:#a30e0e}.chart-tip{font-size:11px;font-weight:950;fill:#10241a}.chart-tip-bg{fill:#fff;stroke:#cfe0d5;stroke-width:1}.avgline{stroke:#0b4f9c;stroke-dasharray:7 7;stroke-width:1.5}.scatter-legend{position:absolute;left:10px;bottom:10px;display:flex;gap:6px;flex-wrap:wrap}.scatter-legend span{background:rgba(255,255,255,.9);border:1px solid #e2e8f0;border-radius:999px;padding:4px 7px;font-size:9.5px;font-weight:900;color:#334155}.point{cursor:pointer}.print-only{display:none}.print-header{border:1px solid #c8d8d0;border-radius:12px;padding:10px 12px;margin-bottom:10px;background:#f4f9f6}.print-header h2{margin:0;color:#0a5029;font-size:18px}.print-header p{margin:3px 0 0;color:#4a6055;font-size:10px;font-weight:800}.print-meta{text-align:right;font-size:10px;font-weight:800;color:#10241a}.print-meta strong{display:block;font-size:12px;margin-bottom:2px}.print-meta span{display:block;color:#64748b}.print-end{margin-top:10px;border-top:1px solid #c8d8d0;padding-top:8px;text-align:center;color:#334155;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.35px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes scaleIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(74,222,128,.25)}50%{box-shadow:0 0 0 7px rgba(74,222,128,.10)}}@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 @media(max-width:560px){.ficha-band{flex-direction:column}.ficha-actions{width:100%;align-items:flex-start}.ficha-print-btn{width:100%;justify-content:center}.ficha-band h2{font-size:20px}}
-@media print{@page{size:letter portrait;margin:10mm}body.print-ficha{background:#fff!important;color:#111!important;padding:0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}body.print-ficha .topline,body.print-ficha header,body.print-ficha .hero,body.print-ficha .quick,body.print-ficha .bottomnav,body.print-ficha .statebar,body.print-ficha .footer{display:none!important}body.print-ficha main{display:block!important;max-width:100%!important;padding:0!important;margin:0!important}body.print-ficha main>*{display:none!important}body.print-ficha #fichaSection.no-print,body.print-ficha #fichaSection{display:block!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:#fff!important}body.print-ficha #fichaContent,body.print-ficha #printPanel{display:block!important}body.print-ficha #printPanel{border:0!important;box-shadow:none!important;margin:0!important;padding:0!important;background:#fff!important}body.print-ficha #fichaSection>.section-title{display:none!important}body.print-ficha .print-only{display:block!important}body.print-ficha .print-header{display:flex!important;align-items:flex-start;justify-content:space-between;gap:10px;page-break-inside:avoid;break-inside:avoid}body.print-ficha .no-print,body.print-ficha .ficha-band,body.print-ficha .ficha-screen-title,body.print-ficha .searchbox,body.print-ficha #fichaEndBox,body.print-ficha button{display:none!important}body.print-ficha .card,body.print-ficha .ficha-card{box-shadow:none!important;border:0!important;border-radius:0!important;margin:0!important;padding:0!important}body.print-ficha .kpis{grid-template-columns:repeat(4,1fr)!important;gap:6px!important;page-break-inside:avoid;break-inside:avoid}body.print-ficha .kpi{min-height:58px!important;border-radius:10px!important;padding:8px!important;box-shadow:none!important}body.print-ficha .kpi .label{font-size:8.5px!important}body.print-ficha .kpi strong{font-size:15px!important}body.print-ficha .kpi em{font-size:8.5px!important}body.print-ficha .delta-grid{grid-template-columns:repeat(3,1fr)!important;gap:6px!important;page-break-inside:avoid;break-inside:avoid}body.print-ficha .delta{border-radius:10px!important;padding:7px!important}body.print-ficha .delta span{font-size:8.5px!important}body.print-ficha .delta strong{font-size:14px!important}body.print-ficha .svgbox{display:block!important;min-height:170px!important;border-radius:10px!important;padding:5px!important;page-break-inside:avoid;break-inside:avoid}body.print-ficha .svgbox svg{display:block!important;height:180px!important}body.print-ficha .mobile-trend-card{display:none!important}body.print-ficha .table-wrap{overflow:visible!important;max-height:none!important;border-radius:8px!important;page-break-inside:auto!important;break-inside:auto!important}body.print-ficha table{font-size:8.2px!important;page-break-inside:auto!important}body.print-ficha tr{page-break-inside:avoid;break-inside:avoid}body.print-ficha th{position:static!important;background:#0b7f3a!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}body.print-ficha th,body.print-ficha td{padding:4px 5px!important;white-space:nowrap!important}body.print-ficha .print-end{display:block!important;page-break-inside:avoid;break-inside:avoid}}
+@media print{@page{size:letter portrait;margin:10mm}@page:first{margin-top:10mm}body.print-ficha{background:#fff!important;color:#111!important;padding:0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}body.print-ficha .topline,body.print-ficha header,body.print-ficha .hero,body.print-ficha .quick,body.print-ficha .bottomnav,body.print-ficha .statebar,body.print-ficha .footer{display:none!important}body.print-ficha main{display:block!important;max-width:100%!important;padding:0!important;margin:0!important}body.print-ficha main>*{display:none!important}body.print-ficha details>summary{display:none!important}body.print-ficha details{display:block!important;border:none!important;padding:0!important;margin:0!important}body.print-ficha #fichaSection.no-print,body.print-ficha #fichaSection{display:block!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:#fff!important}body.print-ficha #fichaContent,body.print-ficha #printPanel{display:block!important}body.print-ficha #printPanel{border:0!important;box-shadow:none!important;margin:0!important;padding:0!important;background:#fff!important}body.print-ficha #fichaSection>.section-title{display:none!important}body.print-ficha .print-only{display:block!important}body.print-ficha .print-header{display:flex!important;align-items:flex-start;justify-content:space-between;gap:10px;page-break-inside:avoid;break-inside:avoid}body.print-ficha .no-print,body.print-ficha .ficha-band,body.print-ficha .ficha-screen-title,body.print-ficha .searchbox,body.print-ficha #fichaEndBox,body.print-ficha button{display:none!important}body.print-ficha .card,body.print-ficha .ficha-card{box-shadow:none!important;border:0!important;border-radius:0!important;margin:0!important;padding:0!important}body.print-ficha .kpis{grid-template-columns:repeat(4,1fr)!important;gap:6px!important;page-break-inside:avoid;break-inside:avoid}body.print-ficha .kpi{min-height:58px!important;border-radius:10px!important;padding:8px!important;box-shadow:none!important}body.print-ficha .kpi .label{font-size:8.5px!important}body.print-ficha .kpi strong{font-size:15px!important}body.print-ficha .kpi em{font-size:8.5px!important}body.print-ficha .delta-grid{grid-template-columns:repeat(3,1fr)!important;gap:6px!important;page-break-inside:avoid;break-inside:avoid}body.print-ficha .delta{border-radius:10px!important;padding:7px!important}body.print-ficha .delta span{font-size:8.5px!important}body.print-ficha .delta strong{font-size:14px!important}body.print-ficha .svgbox{display:block!important;min-height:170px!important;border-radius:10px!important;padding:5px!important;page-break-inside:avoid;break-inside:avoid}body.print-ficha .svgbox svg{display:block!important;height:180px!important}body.print-ficha .mobile-trend-card{display:none!important}body.print-ficha .table-wrap{overflow:visible!important;max-height:none!important;border-radius:8px!important;page-break-inside:auto!important;break-inside:auto!important}body.print-ficha table{font-size:8.2px!important;page-break-inside:auto!important}body.print-ficha tr{page-break-inside:avoid;break-inside:avoid}body.print-ficha th{position:static!important;background:#0b7f3a!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}body.print-ficha th,body.print-ficha td{padding:4px 5px!important;white-space:nowrap!important}body.print-ficha .print-end{display:block!important;page-break-inside:avoid;break-inside:avoid}}
 
 
 
@@ -1065,6 +1065,167 @@ body.crono-print-preview .print-end{display:block!important;text-align:center!im
   #cronoContent > .crono-summary-grid .hval{font-size:11px!important;}
 }
 
+
+/* ===== V22 · Cronológico y Histórico: impresión rediseñada ===== */
+/* Color top bar for both print modes */
+@media print {
+  body.printing-crono-direct .print-page::before,
+  body.crono-print-preview .print-page::before {
+    content: '';
+    display: block !important;
+    height: 6px !important;
+    background: linear-gradient(90deg,#0b7f3a 0 42%,#005baa 42% 78%,#f4c542 78%) !important;
+    margin-bottom: 10px !important;
+    border-radius: 3px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  /* Cronológico: colored print-header */
+  body.printing-crono-direct .print-header,
+  body.crono-print-preview .print-header {
+    background: linear-gradient(135deg,#07381d,#0b7f3a 60%,#005baa) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 14px !important;
+    padding: 12px 14px !important;
+    margin-bottom: 10px !important;
+  }
+  body.printing-crono-direct .print-header h2,
+  body.crono-print-preview .print-header h2 {
+    color: #fff !important;
+    font-size: 18px !important;
+  }
+  body.printing-crono-direct .print-header p,
+  body.crono-print-preview .print-header p {
+    color: rgba(255,255,255,.85) !important;
+    font-size: 10px !important;
+    margin-top: 3px !important;
+  }
+  body.printing-crono-direct .print-meta,
+  body.crono-print-preview .print-meta {
+    color: rgba(255,255,255,.9) !important;
+    text-align: right !important;
+  }
+  body.printing-crono-direct .print-meta strong,
+  body.crono-print-preview .print-meta strong {
+    color: #fff !important;
+    font-size: 13px !important;
+  }
+  body.printing-crono-direct .print-meta span,
+  body.crono-print-preview .print-meta span {
+    color: rgba(255,255,255,.78) !important;
+    font-size: 9px !important;
+  }
+  /* Better KPI cards in crono print */
+  body.printing-crono-direct .kpi.main,
+  body.crono-print-preview .kpi.main {
+    background: linear-gradient(135deg,#103d25,#0b7f3a) !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body.printing-crono-direct .kpi.main .label { color: rgba(255,255,255,.78) !important; }
+  body.printing-crono-direct .kpi.main strong { color: #fff !important; }
+  /* crono-summary-grid (bar charts) - show in print */
+  body.printing-crono-direct .crono-summary-grid,
+  body.crono-print-preview .crono-summary-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2,1fr) !important;
+    gap: 7px !important;
+    margin: 8px 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+  body.printing-crono-direct .crono-box,
+  body.crono-print-preview .crono-box {
+    display: block !important;
+    border: 1px solid #d8ecdf !important;
+    border-radius: 10px !important;
+    padding: 8px !important;
+    background: #fbfffc !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body.printing-crono-direct .crono-box h3,
+  body.crono-print-preview .crono-box h3 {
+    font-size: 9px !important;
+    margin: 0 0 5px !important;
+    color: #0a5029 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .3px !important;
+  }
+  body.printing-crono-direct .hrow,
+  body.crono-print-preview .hrow {
+    display: grid !important;
+    grid-template-columns: 80px 1fr 44px !important;
+    gap: 4px !important;
+    align-items: center !important;
+    margin-bottom: 3px !important;
+  }
+  body.printing-crono-direct .hlabel,
+  body.crono-print-preview .hlabel {
+    font-size: 7.5px !important;
+    font-weight: 850 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  body.printing-crono-direct .hfill,
+  body.crono-print-preview .hfill {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body.printing-crono-direct .hval,
+  body.crono-print-preview .hval { font-size: 8px !important; text-align: right !important; }
+  /* Better table design for crono */
+  body.printing-crono-direct .tch-good td,
+  body.crono-print-preview .tch-good td {
+    background: #f0fbf5 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body.printing-crono-direct .tch-warn td,
+  body.crono-print-preview .tch-warn td {
+    background: #fff9e8 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body.printing-crono-direct .tch-low td,
+  body.crono-print-preview .tch-low td {
+    background: #fff1f1 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  /* Histórico: improved print-ficha */
+  body.print-ficha .print-header {
+    background: linear-gradient(135deg,#07381d,#002f5f) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 14px !important;
+    padding: 12px 14px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body.print-ficha .print-header h2 { color: #fff !important; font-size: 18px !important; }
+  body.print-ficha .print-header p { color: rgba(255,255,255,.85) !important; font-size: 10px !important; }
+  body.print-ficha .print-meta { color: rgba(255,255,255,.9) !important; }
+  body.print-ficha .print-meta strong { color: #fff !important; font-size: 13px !important; }
+  body.print-ficha .print-meta span { color: rgba(255,255,255,.78) !important; font-size: 9px !important; }
+  /* Add color bar before print content in Histórico */
+  body.print-ficha #fichaContent::before {
+    content: '' !important;
+    display: block !important;
+    height: 6px !important;
+    background: linear-gradient(90deg,#002f5f 0 42%,#0b7f3a 42% 78%,#f4c542 78%) !important;
+    margin-bottom: 10px !important;
+    border-radius: 3px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body.print-ficha .tch-good td { background:#f0fbf5!important; -webkit-print-color-adjust:exact!important; print-color-adjust:exact!important; }
+  body.print-ficha .tch-warn td { background:#fff9e8!important; -webkit-print-color-adjust:exact!important; print-color-adjust:exact!important; }
+  body.print-ficha .tch-low td { background:#fff1f1!important; -webkit-print-color-adjust:exact!important; print-color-adjust:exact!important; }
+}
 </style>
 </head>
 <body>
@@ -1382,6 +1543,10 @@ function buildFichaPrintHtml(){
 }
 function printFicha(){
   if(!currentEntity){alert('Seleccioná primero una ficha individual.');return;}
+  const eName = currentEntity.name || 'Ficha';
+  const eCode = currentEntity.displayCode || currentEntity.code || '';
+  const prevTitle = document.title;
+  document.title = 'Historico_CASUR_' + String(eCode).replace(/[^a-zA-Z0-9]/g,'_') + '_' + String(eName).replace(/[^a-zA-Z0-9]/g,'_');
   const isMobile=window.matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
   if(isMobile){
     const w=window.open('','_blank');
@@ -1390,11 +1555,12 @@ function printFicha(){
       w.document.write(buildFichaPrintHtml());
       w.document.close();
       try{w.focus();}catch(e){}
+      document.title = prevTitle;
       return;
     }
   }
   document.body.classList.add('print-ficha');
-  setTimeout(()=>window.print(),180);
+  setTimeout(()=>{window.print(); setTimeout(()=>{ document.title=prevTitle; },500);},180);
 }
 window.addEventListener('afterprint',()=>document.body.classList.remove('print-ficha'));
 

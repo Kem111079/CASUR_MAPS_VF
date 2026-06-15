@@ -1,4 +1,4 @@
-const CACHE_NAME = 'casur-maps-pwa-v21-8-dual-foto-vignette-close';
+const CACHE_NAME = 'casur-maps-pwa-vf-22';
 const CORE_ASSETS = [
   './',
   './index.html',

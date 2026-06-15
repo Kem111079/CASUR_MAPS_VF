@@ -767,6 +767,7 @@ function cleanSelectedHtml(p, compact=false){
       <a class="go-crono" href="${escapeHtml(crono)}">▣ Cronológico</a>
       <a class="go-hist" href="${escapeHtml(hist)}">▥ Histórico</a>
       <button class="go-zoom" onclick="zoomSelected()" type="button">⌕ Acercar</button>
+      <button class="go-close-panel" onclick="closePanel(true)" type="button">✕ Cerrar</button>
       <button class="share-hallazgo-btn" onclick="openHallazgoModal()" type="button">🟢 Compartir hallazgo</button>
     </div>`;
 }
@@ -2003,7 +2004,29 @@ window.downloadHallazgoImage=downloadHallazgoImage;
 window.copyHallazgoText=copyHallazgoText;
 
 // bind V21.8 UI after page load
+function renumberVignettes(){
+  const items = document.querySelectorAll('#hallazgoVignetteList .hallazgo-vignette-item');
+  items.forEach((item, i) => {
+    const num = item.querySelector('.hallazgo-vignette-num');
+    const del = item.querySelector('.hallazgo-vignette-del');
+    if(num) num.textContent = String(i+1);
+    if(del) del.style.visibility = items.length > 1 ? 'visible' : 'hidden';
+  });
+  const addBtn = document.getElementById('hallazgoAddVignette');
+  if(addBtn) addBtn.disabled = items.length >= 5;
+}
 function bindVignetteInput(ta){ ta.addEventListener('input', function(){ renderHallazgoCard(); }); }
+function bindVignetteDelete(btn){
+  btn.addEventListener('click', function(){
+    const item = this.closest('.hallazgo-vignette-item');
+    if(!item) return;
+    const list = document.getElementById('hallazgoVignetteList');
+    if(list && list.querySelectorAll('.hallazgo-vignette-item').length <= 1) return;
+    item.remove();
+    renumberVignettes();
+    renderHallazgoCard();
+  });
+}
 setTimeout(function(){
   $('hallazgoClose')?.addEventListener('click', closeHallazgoModal);
   $('hallazgoGenerar')?.addEventListener('click', renderHallazgoCard);
@@ -2018,14 +2041,17 @@ setTimeout(function(){
     if(current >= 5){ this.disabled=true; return; }
     const n=current+1;
     const div=document.createElement('div'); div.className='hallazgo-vignette-item';
-    div.innerHTML=`<span class="hallazgo-vignette-num">${n}</span><textarea class="hallazgo-vignette-ta" data-vignette="${n-1}" placeholder="Comentario ${n}..." rows="2"></textarea>`;
+    div.innerHTML=`<span class="hallazgo-vignette-num">${n}</span><textarea class="hallazgo-vignette-ta" data-vignette="${n-1}" placeholder="Comentario ${n}..." rows="2"></textarea><button class="hallazgo-vignette-del" type="button" title="Eliminar comentario" aria-label="Eliminar">✕</button>`;
     list.appendChild(div);
     bindVignetteInput(div.querySelector('.hallazgo-vignette-ta'));
+    bindVignetteDelete(div.querySelector('.hallazgo-vignette-del'));
     div.querySelector('.hallazgo-vignette-ta').focus();
-    if(list.querySelectorAll('.hallazgo-vignette-item').length >= 5) this.disabled=true;
+    renumberVignettes();
   });
-  // Initial vignette inputs
+  // Initial vignette inputs and delete buttons
   document.querySelectorAll('.hallazgo-vignette-ta').forEach(bindVignetteInput);
+  document.querySelectorAll('.hallazgo-vignette-del').forEach(bindVignetteDelete);
+  renumberVignettes();
   // Photo 1
   $('hallazgoFotoInput')?.addEventListener('change', function(){
     const f=this.files && this.files[0];
@@ -2118,8 +2144,9 @@ openHallazgoModal = function(){
   // Reset vignettes to 1 empty comment
   const list=$('hallazgoVignetteList');
   if(list){
-    list.innerHTML='<div class="hallazgo-vignette-item"><span class="hallazgo-vignette-num">1</span><textarea class="hallazgo-vignette-ta" data-vignette="0" placeholder="Ej. Se observa baja cobertura en el borde norte del lote." rows="2"></textarea></div>';
+    list.innerHTML='<div class="hallazgo-vignette-item"><span class="hallazgo-vignette-num">1</span><textarea class="hallazgo-vignette-ta" data-vignette="0" placeholder="Ej. Se observa baja cobertura en el borde norte del lote." rows="2"></textarea><button class="hallazgo-vignette-del" type="button" title="Eliminar" aria-label="Eliminar" style="visibility:hidden">✕</button></div>';
     list.querySelectorAll('.hallazgo-vignette-ta').forEach(ta=>ta.addEventListener('input',function(){renderHallazgoCard();}));
+    list.querySelectorAll('.hallazgo-vignette-del').forEach(btn=>{ if(typeof bindVignetteDelete==='function') bindVignetteDelete(btn); });
   }
   const addBtn=$('hallazgoAddVignette'); if(addBtn) addBtn.disabled=false;
   setHallazgoPreviewPhoto('',1);
