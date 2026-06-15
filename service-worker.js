@@ -1,4 +1,4 @@
-const CACHE_NAME = 'casur-maps-pwa-vf-22';
+const CACHE_NAME = 'casur-maps-pwa-vf-22-2';
 const CORE_ASSETS = [
   './',
   './index.html',

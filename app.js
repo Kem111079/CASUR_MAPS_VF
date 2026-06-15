@@ -426,7 +426,7 @@ function handlePanelOutsidePointer(e){
   // Si el toque ocurre dentro del panel, no cerrar.
   if(t.closest?.('#sidebar')) return;
   // Botones que abren o controlan panel no deben provocar cierre inmediato accidental.
-  if(t.closest?.('#mobileToggle,#btnPanelFloating,#panelCloseBtn,.go-close-panel,.mobile-actions,.topbar')) return;
+  if(t.closest?.('#mobileToggle,#btnPanelFloating,#panelCloseBtn,.mobile-actions,.topbar')) return;
   // Controles flotantes y modales no se cierran por autoclose.
   if(t.closest?.('.leaflet-control,.selection-sheet,.gps-status-bar,.measure-floating-toolbar,.install-toast,.obs-modal,.quick-ficha-modal')) return;
   closePanel(true);
@@ -768,7 +768,7 @@ function cleanSelectedHtml(p, compact=false){
       <a class="go-hist" href="${escapeHtml(hist)}">▥ Histórico</a>
       <button class="go-zoom" onclick="zoomSelected()" type="button">⌕ Acercar</button>
       <button class="share-hallazgo-btn" onclick="openHallazgoModal()" type="button">🟢 Compartir hallazgo</button>
-      <button class="go-close-panel" onclick="window.closePanel(true)" type="button">✕ Cerrar</button>
+      <button class="go-close-panel" onclick="window.closeCardOrPanel()" type="button">✕ Cerrar</button>
     </div>`;
 }
 function updateSelectionSheet(p){
@@ -778,6 +778,13 @@ function updateSelectionSheet(p){
   sheet.classList.remove('collapsed');
 }
 function hideSelectionSheet(suppressAuto=false){ const sheet=$('selectionSheet'); if(sheet) sheet.classList.add('collapsed'); if(suppressAuto) gpsSheetSuppressUntil = Date.now() + 60000; }
+window.hideSelectionSheet = hideSelectionSheet;
+// V22.2 · cierra sheet en móvil O sidebar en desktop, sea lo que esté abierto
+window.closeCardOrPanel = function(){
+  var sheet = document.getElementById('selectionSheet');
+  if(sheet && !sheet.classList.contains('collapsed')) sheet.classList.add('collapsed');
+  if(document.body.classList.contains('sidebar-open')) window.closePanel(true);
+};
 
 function selectFeature(feature, layer, zoom, fromGps=false){
   if(!feature || !layer) return;
